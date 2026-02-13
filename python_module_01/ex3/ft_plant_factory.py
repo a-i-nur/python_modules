@@ -8,13 +8,13 @@ class Plant:
         self.name = name
         self.height = height
         self.days = days
-        _total_plants += 1
+        Plant._total_plants += 1
 
     def print_info(self) -> None:
         print(f"Created: {self.name} ({self.height}cm, {self.days} days)")
 
-    def ptint_total_plants() -> None:
-        print(f"Total plants created: {Plant._total_plants}")
+    def print_total_plants() -> None:
+        print(f"\nTotal plants created: {Plant._total_plants}")
 
 
 def ft_plant_factory() -> None:
@@ -29,6 +29,7 @@ def ft_plant_factory() -> None:
     for plant in plants:
         new_plant = Plant(*plant)
         new_plant.print_info()
+    Plant.print_total_plants()
 
 
 if __name__ == "__main__":

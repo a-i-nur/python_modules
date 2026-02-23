@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 
+
 def ft_garden_intro() -> None:
+    """Show one plant with basic values.
+
+    Q: Why use variables first?
+    A: It is easier to change data in one place.
+    """
     plant_name = "Rose"
     plant_height = "25cm"
     plant_age = "30 days"

@@ -15,15 +15,13 @@ def water_plants(plant_list: list) -> None:
 
 def test_watering_system() -> None:
     print("=== Garden Watering System ===\n")
+
     print("Testing normal watering...")
     water_plants(["tomato", "lettuce", "carrots"])
     print("Watering completed successfully!\n")
 
     print("Testing with error...")
-    try:
-        water_plants(["tomato", None, "carrots"])
-    except ValueError as e:
-        print(f"Error: {e}")
+    water_plants(["tomato", None, "carrots"])
 
     print("\nCleanup always happens, even with errors!")
 

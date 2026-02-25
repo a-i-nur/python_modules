@@ -1,6 +1,6 @@
-#!/usr/bin/env pythion3
+#!/usr/bin/env python3
 
-def check_temperature(temp_str: str) -> int:
+def check_temperature(temp_str: str) -> int | None:
     print(f"Testing temperature: {temp_str}")
     try:
         temp = int(temp_str)
@@ -13,16 +13,17 @@ def check_temperature(temp_str: str) -> int:
             print(f"Error: {temp}°C is too hot for plants (max 40°C)\n")
     except ValueError:
         print(f"Error: '{temp_str}' is not a valid number\n")
+    return None
 
 
-def test_temperature_inpit() -> None:
+def test_temperature_input() -> None:
     print("=== Garden Temperature Checker ===")
     check_temperature("25")
-    check_temperature("abs")
-    check_temperature(100)
+    check_temperature("abc")
+    check_temperature("100")
     check_temperature("-50")
     print("All tests completed - program didn't crash!")
 
 
 if __name__ == "__main__":
-    test_temperature_inpit()
+    test_temperature_input()

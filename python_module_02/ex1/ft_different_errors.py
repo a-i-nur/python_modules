@@ -14,10 +14,14 @@ def garden_operations() -> None:
         print(f"Caught ZeroDivisionError: {e}\n")
 
     print("Testing FileNotFoundError...")
+    file = None
     try:
-        open("missing.txt", "r")
+        file = open("missing.txt", "r")
     except FileNotFoundError as e:
         print(f"Caught FileNotFoundError: {e}\n")
+    finally:
+        if file is not None:
+            file.close()
 
     print("Testing KeyError...")
     try:

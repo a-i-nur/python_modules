@@ -8,21 +8,22 @@ def ft_command_quest() -> None:
 
     argv = sys.argv
     prog_name = argv[0]
-    len_args = len(argv)
+    len_argv = len(argv)
 
-    if len_args == 1:
+    if len_argv == 1:
         print("No arguments provided")
-        print(f"Program name: {prog_name}")
-    else:
+
+    print(f"Program name: {prog_name}")
+
+    if len_argv > 1:
         args = argv[1:]
-        print(f"Program name: {prog_name}")
         print(f"Arguments received: {len(args)}")
         i = 1
         for arg in args:
             print(f"Argument {i}: {arg}")
             i += 1
 
-    print(f"Total arguments: {len_args}")
+    print(f"Total arguments: {len_argv}")
 
 
 if __name__ == "__main__":

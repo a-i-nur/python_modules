@@ -71,18 +71,20 @@ class GardenManager:
     A: Stats logic belongs to manager domain and stays grouped here.
     """
 
-    def __init__(self) -> None:
-        """Create empty garden storage."""
-        self.gardens: dict = {}
+    #def __init__(self) -> None:
+    #    """Create empty garden storage."""
+    #    self.gardens: dict = {}
 
     @classmethod
-    def create_garden_network(cls) -> "GardenManager":
+    #def create_garden_network(cls) -> "GardenManager":
+    def create_garden_network(cls) -> None:
         """Build a manager from class level.
 
         Q: Why classmethod here?
         A: It creates an instance from the class itself.
         """
-        return cls()
+        #return cls()
+        cls.gardens = {}
 
     @staticmethod
     def is_valid_height(height: int) -> bool:
@@ -201,7 +203,9 @@ class GardenManager:
 def ft_garden_analytics() -> None:
     """Run a complete demo of manager, plants, and analytics."""
     print("=== Garden Management System Demo ===\n")
-    garden_manager = GardenManager.create_garden_network()
+    garden_manager = GardenManager()
+    GardenManager.create_garden_network()
+    #garden_manager.create_garden_network()
 
     garden_manager.add_garden("Alice")
     garden_manager.add_garden("Bob")

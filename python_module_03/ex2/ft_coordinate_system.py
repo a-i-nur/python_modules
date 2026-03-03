@@ -1,4 +1,11 @@
 #!/bin/usr/env python3
+"""
+Exercise 2: Coordinate System.
+
+Collection theory: tuples are immutable sequences used for fixed-size data,
+such as coordinates. They are hashable (when elements are hashable) and
+support unpacking, which improves readability in geometry calculations.
+"""
 
 import math
 import sys
@@ -7,13 +14,15 @@ import sys
 def calculate_distance(
         point1: tuple[int, int, int],
         point2: tuple[int, int, int]) -> float:
+    """Return Euclidean distance between two 3D coordinate tuples."""
     x1, y1, z1 = point1
     x2, y2, z2 = point2
     result = math.sqrt((x2 - x1)**2 + (y2 - y1)**2 + (z2 - z1)**2)
     return result
 
 
-def ft_coordinate_system():
+def ft_coordinate_system() -> None:
+    """Parse a coordinate tuple and demonstrate tuple operations."""
     print("=== Game Coordinate System ===")
     print()
 
@@ -24,7 +33,7 @@ def ft_coordinate_system():
     print()
 
     coord_input = sys.argv[1]
-    
+
     if (len(sys.argv) != 2):
         print(f"Usage: {sys.argv[0]} <x, y, z>")
         return

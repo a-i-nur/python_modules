@@ -1,9 +1,17 @@
 #!/usr/bin/end python3
+"""
+Exercise 1: Score Analytics.
+
+Collection theory: a list is a mutable container of values with stable order.
+It supports append, iteration, and built-in aggregations like `sum`, `min`,
+and `max`, making it a natural fit for numeric analytics.
+"""
 
 import sys
 
 
-def ft_score_analytics():
+def ft_score_analytics() -> None:
+    """Parse scores from CLI into a list and compute simple statistics."""
     print("=== Player Score Analytics ===")
 
     prog_name = sys.argv[0]

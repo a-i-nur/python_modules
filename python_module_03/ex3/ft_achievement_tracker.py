@@ -1,6 +1,16 @@
 #!/usr/bin/env python3
+"""
+Exercise 3: Achievement Tracker.
 
-def ft_achievement_tracker():
+Collection theory: sets store unique, unordered elements and support
+fast membership checks and algebraic operations (union, intersection,
+difference). They are ideal for de-duplicating achievements and finding
+overlap between players.
+"""
+
+
+def ft_achievement_tracker() -> None:
+    """Show set operations for achievements and player communities."""
     print("=== Achievement Tracker System ===")
     print()
 
@@ -63,6 +73,10 @@ def ft_achievement_tracker():
             p1, p2 = names[i], names[j]
             shared = players[p1].intersection(players[p2])
             print(f"{p1} & {p2} shared: {shared}")
+
+# Missing achievements: каждому игроку показывается, чего ему не хватает
+# из общего набора.
+# Communities: пары игроков и их общие достижения.
 
 
 if __name__ == "__main__":

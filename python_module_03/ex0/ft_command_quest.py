@@ -1,9 +1,17 @@
 #!/usr/bin/env python3
+"""
+Exercise 0: Command Quest.
+
+Collection theory: `sys.argv` is a list, an ordered, mutable sequence.
+Lists preserve insertion order and allow indexing, slicing, and iteration,
+which makes them ideal for processing command-line arguments.
+"""
 
 import sys
 
 
 def ft_command_quest() -> None:
+    """Print basic `sys.argv` analytics using list operations."""
     print("=== Command Quest ===")
 
     argv = sys.argv

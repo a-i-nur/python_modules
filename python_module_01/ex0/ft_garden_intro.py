@@ -10,6 +10,7 @@ def ft_garden_intro() -> None:
     print(f"Plant: {plant_name}")
     print(f"Height: {plant_height}")
     print(f"Age: {plant_age}")
+    print()
     print("=== End of Program ===")
 
 

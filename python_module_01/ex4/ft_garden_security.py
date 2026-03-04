@@ -19,7 +19,7 @@ class SecurePlant:
             print(
                 "Invalid operation attempted:"
                 f" height {height}cm [REJECTED]")
-            print("Security: Negative height rejected")
+            print("Security: Negative height rejected\n")
         else:
             self._height = height
             print(f"Height updated: {height}cm [OK]")
@@ -30,10 +30,10 @@ class SecurePlant:
             print(
                 "Invalid operation attempted:"
                 f" age {age} days [REJECTED]")
-            print("Security: Negative age rejected")
+            print("Security: Negative age rejected\n")
         else:
             self._age = age
-            print(f"Age updated: {age} days [OK]")
+            print(f"Age updated: {age} days [OK]\n")
 
     def get_height(self) -> int:
         """Return current safe height."""

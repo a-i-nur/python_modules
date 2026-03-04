@@ -2,11 +2,7 @@
 
 
 class Plant:
-    """Store common data for one plant.
-
-    Q: Why use a class for simple data?
-    A: Many plants can share the same structure.
-    """
+    """Store common data for one plant."""
 
     def __init__(self, name: str, height: int, days: int) -> None:
         """Build a plant with start values."""
@@ -20,11 +16,7 @@ class Plant:
 
 
 def ft_garden_data() -> None:
-    """Create and print a small plant registry.
-
-    Q: Why three objects instead of three dicts?
-    A: This trains object-oriented basics for next exercises.
-    """
+    """Create and print a small plant registry."""
     rose = Plant("Rose", 25, 30)
     sunflower = Plant("Sunflower", 80, 45)
     cactus = Plant("Cactus", 15, 120)

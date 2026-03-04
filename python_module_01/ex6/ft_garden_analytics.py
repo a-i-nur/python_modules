@@ -9,6 +9,7 @@ class Plant:
         self.name = name
         self.height = height
         self.age = age
+        self.type = "base"
 
     def grow(self) -> None:
         """Increase plant height by one centimeter."""
@@ -18,6 +19,9 @@ class Plant:
     def print_info(self) -> None:
         """Print base plant info."""
         print(f"- {self.name}: {self.height}cm")
+
+    def calculate_score(self) -> int:
+        return self.height
 
 
 class FloweringPlant(Plant):
@@ -30,6 +34,7 @@ class FloweringPlant(Plant):
         super().__init__(name, height, age)
         self.color = color
         self.blooming = blooming
+        self.type = "flowering"
 
     def print_info(self) -> None:
         """Print flowering plant info with bloom status."""
@@ -41,6 +46,9 @@ class FloweringPlant(Plant):
             f"- {self.name}: {self.height}cm, "
             f"{self.color} flowers ({blooming_status})")
 
+    def calculate_score(self) -> int:
+        return self.height + (15 if self.blooming else 0)
+
 
 class PrizeFlower(FloweringPlant):
     """Flowering plant with extra prize points."""
@@ -51,6 +59,7 @@ class PrizeFlower(FloweringPlant):
         """Set flowering fields and prize score."""
         super().__init__(name, height, age, color, blooming)
         self.score = score
+        self.type = "prize"
 
     def print_info(self) -> None:
         """Print prize flower info."""
@@ -63,37 +72,29 @@ class PrizeFlower(FloweringPlant):
             f"{self.color} flowers ({blooming_status}), "
             f"Prize points: {self.score}")
 
+    def calculate_score(self) -> int:
+        return self.height + (15 if self.blooming else 0) + self.score
+
 
 class GardenManager:
     """Manager that stores many gardens and reports analytics.
-
-    Q: Why put stats helper inside manager?
-    A: Stats logic belongs to manager domain and stays grouped here.
     """
 
-    #def __init__(self) -> None:
-    #    """Create empty garden storage."""
-    #    self.gardens: dict = {}
+    def __init__(self) -> None:
+        """Create empty garden storage."""
+        self.gardens: dict = {}
 
     @classmethod
-    #def create_garden_network(cls) -> "GardenManager":
-    def create_garden_network(cls) -> None:
+    def create_garden_network(cls) -> "GardenManager":
         """Build a manager from class level.
-
-        Q: Why classmethod here?
-        A: It creates an instance from the class itself.
         """
-        #return cls()
-        cls.gardens = {}
+        return cls()
 
     @staticmethod
     def is_valid_height(height: int) -> bool:
-        """Check if height is a non-negative integer.
-
-        Q: Why staticmethod?
-        A: This check needs no object or class state.
+        """Check if height is a non-negative.
         """
-        return isinstance(height, int) and height >= 0
+        return height >= 0
 
     def add_garden(self, owner: str) -> None:
         """Add a garden record for one owner."""
@@ -125,7 +126,7 @@ class GardenManager:
 
         for plant in garden_data["plants"]:
             plant.print_info()
-        print("")
+        print()
 
         added = self.GardenStats.plants_added(garden_data)
         growth = self.GardenStats.total_growth(garden_data)
@@ -139,15 +140,23 @@ class GardenManager:
 
     def compare_garden_scores(self) -> None:
         """Print score summary for each garden."""
-        parts = []
+        print("Garden scores - ", end="")
+        first = True
         for owner, garden_data in self.gardens.items():
             score = self.GardenStats.garden_score(garden_data)
-            parts.append(f"{owner}: {score}")
-        print("Garden scores - " + ", ".join(parts))
+            if not first:
+                print(f", {owner}: {score}", end="")
+            else:
+                print(f"{owner}: {score}", end="")
+            first = False
+        print()
 
     def total_gardens(self) -> int:
         """Return number of managed gardens."""
-        return len(self.gardens)
+        i = 0
+        for _ in self.gardens:
+            i += 1
+        return i
 
     class GardenStats:
         """Nested helper for analytics calculations."""
@@ -170,9 +179,9 @@ class GardenManager:
             prize = 0
 
             for plant in garden_data["plants"]:
-                if isinstance(plant, PrizeFlower):
+                if plant.type == "prize":
                     prize += 1
-                elif isinstance(plant, FloweringPlant):
+                elif plant.type == "flowering":
                     flowering += 1
                 else:
                     regular += 1
@@ -182,30 +191,19 @@ class GardenManager:
         @staticmethod
         def garden_score(garden_data: dict) -> int:
             """Calculate total garden score from all components.
-
-            Q: Why combine height, bloom bonus, and prize score?
-            A: It gives one simple number for quick comparison.
             """
             total = 0
-            blooming_bonus = 0
-            prize_points = 0
 
             for plant in garden_data["plants"]:
-                total += plant.height
-                if isinstance(plant, PrizeFlower):
-                    prize_points += plant.score
-                if isinstance(plant, FloweringPlant) and plant.blooming:
-                    blooming_bonus += 15
+                total += plant.calculate_score()
 
-            return total + prize_points + blooming_bonus
+            return total
 
 
 def ft_garden_analytics() -> None:
     """Run a complete demo of manager, plants, and analytics."""
     print("=== Garden Management System Demo ===\n")
-    garden_manager = GardenManager()
-    GardenManager.create_garden_network()
-    #garden_manager.create_garden_network()
+    garden_manager = GardenManager.create_garden_network()
 
     garden_manager.add_garden("Alice")
     garden_manager.add_garden("Bob")
@@ -218,11 +216,11 @@ def ft_garden_analytics() -> None:
     garden_manager.add_plant("Alice", rose)
     garden_manager.add_plant("Alice", sun_flower)
     garden_manager.add_plant("Bob", Plant("Cactus", 92, 20))
-    print("")
+    print()
 
     garden_manager.help_plants_grow("Alice")
     garden_manager.report("Alice")
-    print("")
+    print()
 
     print("Height validation test:", GardenManager.is_valid_height(oak.height))
     garden_manager.compare_garden_scores()

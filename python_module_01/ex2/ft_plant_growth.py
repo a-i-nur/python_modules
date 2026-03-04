@@ -2,11 +2,7 @@
 
 
 class Plant:
-    """Plant model with actions over time.
-
-    Q: Why keep actions in the class?
-    A: The object updates itself, so logic stays together.
-    """
+    """Plant model with actions over time."""
 
     def __init__(self, name: str, height: int, days: int) -> None:
         """Set start state."""
@@ -28,11 +24,7 @@ class Plant:
 
 
 def ft_plant_growth() -> None:
-    """Simulate one week for multiple plants.
-
-    Q: Why use nested loops?
-    A: Outer loop is days, inner loop updates each plant.
-    """
+    """Simulate one week for multiple plants."""
     plants = [
         Plant("Rose", 25, 30),
         Plant("Sunflower", 80, 45),

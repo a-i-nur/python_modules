@@ -2,11 +2,7 @@
 
 
 class SecurePlant:
-    """Plant with protected fields and safe setters.
-
-    Q: Why use _height and _age?
-    A: It signals internal data and encourages safe access methods.
-    """
+    """Plant with protected fields and safe setters."""
 
     def __init__(self, name: str, height: int, age: int) -> None:
         """Create plant and validate initial values through setters."""

@@ -42,12 +42,8 @@ class Tree(Plant):
         self.trunk_diameter = trunk_diameter
 
     def produce_shade(self) -> None:
-        """Estimate and print shade area from simple geometry.
-
-        Q: Why an approximate formula?
-        A: We only need a quick demo value, not real botany precision.
-        """
-        aprx_crown_dmtr = (self.trunk_diameter / 100) * (self.height / 100) * 4
+        """Estimate and print shade area from simple geometry."""
+        aprx_crown_dmtr = (self.trunk_diameter / 100) * 20
         aprx_shade_square = 3.14 * ((aprx_crown_dmtr / 2) ** 2)
         print(
             f"{self.name} provides {aprx_shade_square:.0f} "

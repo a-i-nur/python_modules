@@ -17,9 +17,9 @@ class Plant:
         """Print one created plant."""
         print(f"Created: {self.name} ({self.height}cm, {self.days} days)")
 
-    def print_total_plants() -> None:
+    def print_total_plants(self) -> None:
         """Print total number of created plants."""
-        print(f"\nTotal plants created: {Plant._total_plants}")
+        print(f"\nTotal plants created: {self._total_plants}")
 
 
 def ft_plant_factory() -> None:
@@ -35,7 +35,7 @@ def ft_plant_factory() -> None:
     for plant in plants:
         new_plant = Plant(*plant)
         new_plant.print_info()
-    Plant.print_total_plants()
+    new_plant.print_total_plants()
 
 
 if __name__ == "__main__":

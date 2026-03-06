@@ -86,14 +86,12 @@ class GardenManager:
 
     @classmethod
     def create_garden_network(cls) -> "GardenManager":
-        """Build a manager from class level.
-        """
+        """Build a manager from class level."""
         return cls()
 
     @staticmethod
     def is_valid_height(height: int) -> bool:
-        """Check if height is a non-negative.
-        """
+        """Check if height is a non-negative."""
         return height >= 0
 
     def add_garden(self, owner: str) -> None:

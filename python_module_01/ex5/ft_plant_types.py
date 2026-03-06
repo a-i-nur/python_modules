@@ -10,6 +10,11 @@ class Plant:
         self.height = height
         self.age = age
 
+    def print_info(self) -> None:
+        """Print plant data"""
+        print(
+            f"{self.name} (Flower): {self.height}cm, {self.age}")
+
 
 class Flower(Plant):
     """Plant type that adds color and bloom behavior."""

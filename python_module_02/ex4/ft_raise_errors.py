@@ -53,8 +53,7 @@ def test_plant_checks() -> None:
         print(result)
     except ValueError as e:
         print(f"Error: {e}")
-    
-
+    print()
     print("All error raising tests completed!")
 
 

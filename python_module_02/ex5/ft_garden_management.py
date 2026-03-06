@@ -20,16 +20,24 @@ class GardenManager:
         self.plants: dict[str, dict[str, int]] = {}
         self.water_tank: int = 10
 
-    def add_plant(self, name: str, water: int, sun: int) -> None:
+    def add_plant(
+            self,
+            name: str,
+            water: int | None = None,
+            sun: int | None = None) -> None:
         if not name:
             raise PlantError("Plant name cannot be empty!")
+        if water is None:
+            water = 5
+        if sun is None:
+            sun = 8
         self.plants[name] = {"water": water, "sun": sun}
         print(f"Added {name} successfully")
 
     def water_plants(self) -> None:
         print("Opening watering system")
         try:
-            for plant, info in self.plants.items():
+            for plant in self.plants:
                 if self.water_tank <= 0:
                     raise WaterError("Not enough water in tank")
                 print(f"Watering {plant} - success")
@@ -40,32 +48,32 @@ class GardenManager:
     def check_plant_health(
         self,
         plant_name: str,
-        water_level: int,
-        sunlight_hours: int
     ) -> str:
         if not plant_name:
             raise ValueError("Plant name cannot be empty!")
         if plant_name not in self.plants:
             raise PlantError(
                 f"Plant '{plant_name}' not found!")
-        if water_level < 1:
+        if self.plants[plant_name]["water"] < 1:
             raise ValueError(
-                f"Water level {water_level} is too low (min 1)")
-        if water_level > 10:
+                f"Water level {self.plants[plant_name]["water"]} "
+                "is too low (min 1)")
+        if self.plants[plant_name]["water"] > 10:
             raise ValueError(
-                f"Water level {water_level} is too high (max 10)")
-        if sunlight_hours < 2:
+                f"Water level {self.plants[plant_name]["water"]} "
+                "is too high (max 10)")
+        if self.plants[plant_name]["sun"] < 2:
             raise ValueError(
-                f"Sunlight hours {sunlight_hours} is too low (min 2)")
-        if sunlight_hours > 12:
+                f"Sunlight hours {self.plants[plant_name]["sun"]} "
+                "is too low (min 2)")
+        if self.plants[plant_name]["sun"] > 12:
             raise ValueError(
-                f"Sunlight hours {sunlight_hours} is too high (max 12)")
-
-        self.plants[plant_name]["water"] = water_level
-        self.plants[plant_name]["sun"] = sunlight_hours
+                f"Sunlight hours {self.plants[plant_name]["sun"]} "
+                "is too high (max 12)")
         return (
             f"{plant_name}: healthy "
-            f"(water: {water_level}, sun: {sunlight_hours})")
+            f"(water: {self.plants[plant_name]["water"]}, "
+            f"sun: {self.plants[plant_name]["sun"]})")
 
 
 def test_garden_management() -> None:
@@ -76,7 +84,7 @@ def test_garden_management() -> None:
     try:
         manager.add_plant("tomato", 5, 8)
         manager.add_plant("lettuce", 15, 6)
-        manager.add_plant("", 3, 4)  # Invalid input
+        manager.add_plant("")
     except PlantError as e:
         print(f"Error adding plant: {e}")
     print()
@@ -90,12 +98,12 @@ def test_garden_management() -> None:
 
     print("Checking plant health...")
     try:
-        print(manager.check_plant_health("tomato", 5, 8))
+        print(manager.check_plant_health("tomato"))
     except (GardenError, ValueError) as e:
         print(f"Error checking tomato: {e}")
 
     try:
-        print(manager.check_plant_health("lettuce", 15, 6))
+        print(manager.check_plant_health("lettuce"))
     except (GardenError, ValueError) as e:
         print(f"Error checking lettuce: {e}")
     print()

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-def garden_operations() -> None:
+def garden_operations(plant: str | None = None) -> None:
     print("Testing ValueError...")
     try:
-        int("plant")
+        int(plant)
     except ValueError as e:
         print(f"Caught ValueError: {e}\n")
 
@@ -39,7 +39,7 @@ def garden_operations() -> None:
 
 def test_error_types() -> None:
     print("=== Garden Error Types Demo ===\n")
-    garden_operations()
+    garden_operations("rose")
     print("All error types tested successfully!")
 
 

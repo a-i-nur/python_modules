@@ -2,6 +2,8 @@
 
 def garden_operations(plant: str | None = None) -> None:
     print("Testing ValueError...")
+    if plant is None:
+        plant = "plant"
     try:
         int(plant)
     except ValueError as e:

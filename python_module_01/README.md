@@ -186,33 +186,28 @@ Short theory:
 #### ex6 project schema
 
 ```text
-ft_garden_analytics.py
-|
-+-- Plant
-|   +-- fields: name, height, age, type
-|   +-- methods: grow, print_info, calculate_score
-|
-+-- FloweringPlant(Plant)
-|   +-- fields: color, blooming
-|   +-- methods: print_info(override), calculate_score(override)
-|
-+-- PrizeFlower(FloweringPlant)
-|   +-- fields: score
-|   +-- methods: print_info(override), calculate_score(override)
-|
-+-- GardenManager
-    +-- gardens: { owner: {plants: [], stats: {...}} }
-    +-- methods:
-        - create_garden_network (classmethod)
-        - is_valid_height (staticmethod)
-        - add_garden, add_plant, help_plants_grow, report,
-          compare_garden_scores, total_gardens
-    +-- nested class GardenStats
-        - plants_added
-        - total_growth
-        - type_breakdown
-        - garden_score
+GardenManager
+│
+└── gardens (dict)
+     │
+     ├── "Alice"
+     │     │
+     │     ├── plants (list)
+     │     │      ├─ Plant
+     │     │      ├─ FloweringPlant
+     │     │      └─ PrizeFlower
+     │     │
+     │     └── stats (dict)
+     │            ├─ plants_added
+     │            └─ total_growth
+     │
+     └── "Bob"
+           │
+           ├── plants
+           └── stats
 ```
+
+(ASCII tree diagram / hierarchical data structure)
 
 #### ex6 run flow schema
 

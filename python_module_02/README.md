@@ -373,3 +373,132 @@ When not to use:
 - Do not swallow `BaseException`, because it may block normal process stop (`Ctrl+C`) or exit flow.
 
 These rules are exactly what Module 02 builds step by step.
+
+---
+
+## 6) Quick Q&A (Interview style)
+
+### Q1: How is `raise` different from `except`?
+A:
+- `raise` throws/triggers an exception.
+- `except` catches/handles an exception.
+- In short: `raise` creates the failure signal, `except` processes it.
+
+### Q2: Why use separate error types?
+A:
+- To react differently to different failures.
+- `ValueError` means bad value, `FileNotFoundError` means missing file, etc.
+- Specific types make logs, debugging, and recovery logic much clearer.
+
+### Q3: Why is `finally` important?
+A:
+- It guarantees cleanup logic executes in both success and failure paths.
+- Typical use: close file/socket/connection, release lock, stop resource.
+
+### Q4: When should you catch a specific type vs `Exception`?
+A:
+- Catch concrete type (`ValueError`, `KeyError`, custom error) when you know exactly how to recover.
+- Catch `Exception` at top-level boundaries (CLI entrypoint, worker loop, API handler) to prevent app crash and return controlled response.
+
+### Q5: What happens if an exception is not caught?
+A:
+- It propagates up the call stack.
+- If no frame catches it, program stops with traceback.
+
+### Q6: Why should `except Exception` not be used everywhere?
+A:
+- It can hide real bugs and make debugging harder.
+- It may convert serious coding errors into silent bad behavior.
+- Broad catch should be rare and placed at boundaries, not deep in business logic.
+
+### Q7: How should an error message be written?
+A:
+- Include what is wrong, actual value, expected range/format, and context.
+- Good: `"Water level 15 is too high (max 10)"`
+- Weak: `"Invalid input"`
+
+### Q8: What is the benefit of custom exceptions in a real project?
+A:
+- Domain clarity (`PaymentError`, `AuthError`, `GardenError`).
+- Clean grouping and selective handling by category.
+- Better API contracts between modules and cleaner monitoring/alerts.
+
+### Q9: Why does `finally` run even when there is a `return`?
+A:
+- Python executes `finally` before the function actually exits.
+- This guarantees cleanup even when leaving early.
+
+Example (`return` in `try`):
+
+```python
+def demo_try_return() -> int:
+    try:
+        return 10
+    finally:
+        print("finally from try")
+```
+
+Example (`return` in `except`):
+
+```python
+def demo_except_return(x: str) -> int:
+    try:
+        return int(x)
+    except ValueError:
+        return -1
+    finally:
+        print("finally from except")
+```
+
+### Q10: What is better: print the error inside a function or propagate it upward?
+A:
+- If function is low-level/library-like: raise and let caller decide.
+- If function is top-level/UI boundary: catch and print/log user-facing message.
+
+Approach 1 (print inside function):
+
+```python
+def parse_local(text: str) -> int | None:
+    try:
+        return int(text)
+    except ValueError as e:
+        print("Parse error:", e)
+        return None
+```
+
+Approach 2 (propagate upward):
+
+```python
+def parse_core(text: str) -> int:
+    return int(text)  # may raise ValueError
+
+def main() -> None:
+    try:
+        value = parse_core("abc")
+        print(value)
+    except ValueError as e:
+        print("Input is invalid:", e)
+```
+
+### Q11: When should one `except` handle multiple types?
+A:
+- When recovery action is identical for several errors.
+- Example: same fallback for `ValueError` and `TypeError`.
+
+```python
+try:
+    risky()
+except (ValueError, TypeError) as e:
+    print("Bad data:", e)
+```
+
+### Q12: How do you verify that error handling really works?
+A:
+- Run positive and negative tests intentionally.
+- Trigger each expected error path at least once.
+- Verify:
+  - app does not crash unexpectedly
+  - correct handler is executed
+  - message is clear
+  - cleanup (`finally`) really runs
+  - program can continue when it should

@@ -56,24 +56,24 @@ class GardenManager:
                 f"Plant '{plant_name}' not found!")
         if self.plants[plant_name]["water"] < 1:
             raise ValueError(
-                f"Water level {self.plants[plant_name]["water"]} "
+                f"Water level {self.plants[plant_name]['water']} "
                 "is too low (min 1)")
         if self.plants[plant_name]["water"] > 10:
             raise ValueError(
-                f"Water level {self.plants[plant_name]["water"]} "
+                f"Water level {self.plants[plant_name]['water']} "
                 "is too high (max 10)")
         if self.plants[plant_name]["sun"] < 2:
             raise ValueError(
-                f"Sunlight hours {self.plants[plant_name]["sun"]} "
+                f"Sunlight hours {self.plants[plant_name]['sun']} "
                 "is too low (min 2)")
         if self.plants[plant_name]["sun"] > 12:
             raise ValueError(
-                f"Sunlight hours {self.plants[plant_name]["sun"]} "
+                f"Sunlight hours {self.plants[plant_name]['sun']} "
                 "is too high (max 12)")
         return (
             f"{plant_name}: healthy "
-            f"(water: {self.plants[plant_name]["water"]}, "
-            f"sun: {self.plants[plant_name]["sun"]})")
+            f"(water: {self.plants[plant_name]['water']}, "
+            f"sun: {self.plants[plant_name]['sun']})")
 
 
 def test_garden_management() -> None:

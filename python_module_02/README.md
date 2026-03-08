@@ -341,4 +341,35 @@ def load_sensor_value(text: str) -> int:
 - use custom exceptions for domain clarity
 - validate early, raise early
 
+About catching "everything":
+- `except Exception as e:` catches almost all normal runtime/application errors.
+- `except BaseException as e:` catches truly everything, including system-level signals like `KeyboardInterrupt` and `SystemExit`.
+
+Difference:
+- `Exception` is for regular program errors (recommended in most broad handlers).
+- `BaseException` is the root of all exceptions, including ones that usually should not be swallowed.
+
+ASCII class map (demo):
+
+```text
+BaseException
+├── Exception
+│   ├── ValueError
+│   ├── TypeError
+│   ├── ZeroDivisionError
+│   ├── KeyError
+│   └── FileNotFoundError
+├── SystemExit
+├── KeyboardInterrupt
+└── GeneratorExit
+```
+
+When to use:
+- Use `Exception` for top-level safety boundaries (for example service loop, CLI command boundary) where you can log and recover.
+- Use `BaseException` only in rare infrastructure cases (final cleanup/logging/re-raise), and usually re-raise immediately.
+
+When not to use:
+- Do not use broad catch inside core business logic if you cannot recover meaningfully.
+- Do not swallow `BaseException`, because it may block normal process stop (`Ctrl+C`) or exit flow.
+
 These rules are exactly what Module 02 builds step by step.

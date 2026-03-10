@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-"""
-Exercise 0: Command Quest.
 
-Collection theory: `sys.argv` is a list, an ordered, mutable sequence.
-Lists preserve insertion order and allow indexing, slicing, and iteration,
-which makes them ideal for processing command-line arguments.
-"""
 
 import sys
 
@@ -19,7 +13,7 @@ def ft_command_quest() -> None:
     len_argv = len(argv)
 
     if len_argv == 1:
-        print("No arguments provided")
+        print("No arguments provided!")
 
     print(f"Program name: {prog_name}")
 

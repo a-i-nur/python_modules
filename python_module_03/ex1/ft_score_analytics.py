@@ -1,11 +1,5 @@
-#!/usr/bin/end python3
-"""
-Exercise 1: Score Analytics.
+#!/usr/bin/env python3
 
-Collection theory: a list is a mutable container of values with stable order.
-It supports append, iteration, and built-in aggregations like `sum`, `min`,
-and `max`, making it a natural fit for numeric analytics.
-"""
 
 import sys
 

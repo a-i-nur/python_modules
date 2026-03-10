@@ -1,12 +1,4 @@
 #!/usr/bin/env python3
-"""
-Exercise 3: Achievement Tracker.
-
-Collection theory: sets store unique, unordered elements and support
-fast membership checks and algebraic operations (union, intersection,
-difference). They are ideal for de-duplicating achievements and finding
-overlap between players.
-"""
 
 
 def ft_achievement_tracker() -> None:
@@ -14,69 +6,70 @@ def ft_achievement_tracker() -> None:
     print("=== Achievement Tracker System ===")
     print()
 
-    alice_achieves = {
+    alice = {
         'first_kill', 'level_10',
         'treasure_hunter', 'speed_demon'}
-    bob_achieves = {
+    bob = {
         'first_kill', 'level_10',
         'boss_slayer', 'collector'}
-    charlie_achieves = {
+    charlie = {
         'level_10', 'treasure_hunter', 'boss_slayer',
         'speed_demon', 'perfectionist'}
 
-    players = {
-        'alice': alice_achieves,
-        'bob': bob_achieves,
-        'charlie': charlie_achieves
-    }
-    players = {player: set(achievs) for player, achievs in players.items()}
-
-    for player, achieves in players.items():
-        print(f"Player {player} achievements: {achieves}")
+    print(f"Player alice achievements: {alice}")
+    print(f"Player bob achievements: {bob}")
+    print(f"Player charlie achievements: {charlie}")
     print()
 
     print("=== Achievement Analytics ===")
-    all_achieves = set.union(*players.values())
+    all_achieves = set.union(alice, bob, charlie)
     print(f"All unique achievements: {all_achieves}")
     print(f"Total unique achievements: {len(all_achieves)}")
     print()
 
-    common_achieves = set.intersection(*players.values())
+    common_achieves = set.intersection(alice, bob, charlie)
     print(f"Common to all players: {common_achieves}")
 
-    rare_achieves = set()
-    for achieve in all_achieves:
-        count = sum(1 for achieves in players.values() if achieve in achieves)
-        if count == 1:
-            rare_achieves.add(achieve)
-    print(f"Rare achievements (1 player): {rare_achieves}")
+    rare = set()
+    for ach in all_achieves:
+        owners = 0
+        if ach in alice:
+            owners += 1
+        if ach in bob:
+            owners += 1
+        if ach in charlie:
+            owners += 1
+        if owners == 1:
+            rare.add(ach)
+    print(f"Rare achievements (1 player): {rare}")
     print()
 
-    alice_bob_common = players['alice'].intersection(players['bob'])
+    alice_bob_common = alice.intersection(bob)
     print(f"Alice vs Bob common: {alice_bob_common}")
-    alice_unique = players['alice'].difference(players['bob'])
+
+    alice_unique = alice.difference(bob)
     print(f"Alice unique: {alice_unique}")
-    bob_unique = players['bob'].difference(players['alice'])
+
+    bob_unique = bob.difference(alice)
     print(f"Bob unique: {bob_unique}")
     print()
 
     print("=== Missing Achievements ===")
-    for player, achieves in players.items():
-        missing = all_achieves.difference(achieves)
-        print(f"{player} missing: {missing}")
-
+    alice_missing = all_achieves.difference(alice)
+    bob_missing = all_achieves.difference(bob)
+    charlie_missing = all_achieves.difference(charlie)
+    print(f"Alice missing: {alice_missing}")
+    print(f"Bob missing: {bob_missing}")
+    print(f"Charlie missing: {charlie_missing}")
     print()
-    print("=== Player Communities ===")
-    names = list(players.keys())
-    for i in range(len(names)):
-        for j in range(i + 1, len(names)):
-            p1, p2 = names[i], names[j]
-            shared = players[p1].intersection(players[p2])
-            print(f"{p1} & {p2} shared: {shared}")
 
-# Missing achievements: каждому игроку показывается, чего ему не хватает
-# из общего набора.
-# Communities: пары игроков и их общие достижения.
+    print("=== Player Communities ===")
+    alice_bob_shared = alice.intersection(bob)
+    alice_charlie_shared = alice.intersection(charlie)
+    bob_charlie_shared = bob.intersection(charlie)
+    print(f"Alice & Bob shared: {alice_bob_shared}")
+    print(f"Alice & Charlie shared: {alice_charlie_shared}")
+    print(f"Bob & Charlie shared: {bob_charlie_shared}")
 
 
 if __name__ == "__main__":

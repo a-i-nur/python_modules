@@ -5,6 +5,7 @@ import sys
 
 
 def get_inventory_from_args(args: list[str]) -> dict[str, int] | None:
+    """Parse `item:quantity` arguments into an aggregated inventory dict."""
     inventory: dict[str, int] = {}
     for arg in args:
         try:
@@ -25,6 +26,7 @@ def get_inventory_from_args(args: list[str]) -> dict[str, int] | None:
 
 
 def get_units_str(quantity: int) -> str:
+    """Return singular/plural unit label for a quantity."""
     if quantity == 1:
         return "unit"
     else:
@@ -34,7 +36,7 @@ def get_units_str(quantity: int) -> str:
 def display_sorted_current_inventory(
         inventory: dict[str, int],
         total_items: int) -> None:
-
+    """Print items sorted by share percentage in descending order."""
     percentages: dict[str, float] = {}
     printed: dict[str, int] = {}
 
@@ -59,6 +61,7 @@ def display_sorted_current_inventory(
 
 
 def display_inventory_statistics(inventory: dict[str, int]) -> None:
+    """Print most and least abundant items from inventory."""
     most_abundant_item: str = ""
     for name, quantity in inventory.items():
         if most_abundant_item == "" \
@@ -78,6 +81,7 @@ def display_inventory_statistics(inventory: dict[str, int]) -> None:
 
 
 def display_item_categories(inventory: dict[str, int]) -> None:
+    """Group items into abundance buckets and print nested dict categories."""
     categories: dict[str, dict[str, int]] = {
         "abundant": {},
         "moderate": {},
@@ -96,6 +100,7 @@ def display_item_categories(inventory: dict[str, int]) -> None:
 
 
 def get_last_item(inventory: dict[str, int]) -> str:
+    """Return the last key encountered during dictionary iteration."""
     last_item: str = ""
     for item in inventory.keys():
         last_item = item
@@ -103,6 +108,7 @@ def get_last_item(inventory: dict[str, int]) -> str:
 
 
 def display_management_suggestions(inventory: dict[str, int]) -> None:
+    """Print a restock recommendation for items with very low quantity."""
     restock_needed: dict[str, int] = {}
     for name, quantity in inventory.items():
         if quantity < 2:
@@ -120,7 +126,7 @@ def display_management_suggestions(inventory: dict[str, int]) -> None:
 
 
 def ft_inventory_system() -> None:
-
+    """Run the full CLI inventory analysis report."""
     if len(sys.argv) == 1:
         print("Usage: python3 ft_inventory_system.py item:quantity ...")
         return

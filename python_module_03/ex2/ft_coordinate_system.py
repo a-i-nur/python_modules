@@ -53,6 +53,7 @@ def ft_coordinate_system() -> None:
             error_message, = e.args
             error_args = (error_message,)
             print(f"Error details - Type: ValueError, Args: {error_args}")
+        print()
 
     invalid_input = "abc,def,ghi"
     if coord_input != invalid_input:

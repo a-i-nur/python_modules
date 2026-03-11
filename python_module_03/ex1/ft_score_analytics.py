@@ -26,7 +26,13 @@ def ft_score_analytics() -> None:
                 f"Oops, u typed '{arg}' instead of a valid score. "
                 "Skipping it.")
 
-    if scores_list:
+    if not scores_list:
+        print(
+            f"No valid scores provided. "
+            f"Usage: python3 {prog_name} <score1> <score2> ..."
+        )
+        return
+    else:
         total_players = len(scores_list)
         total_score = sum(scores_list)
         average_score = total_score / total_players

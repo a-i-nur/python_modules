@@ -7,7 +7,7 @@ def ft_ancient_text_recovery() -> None:
     print()
     print(f"Accessing Storage Vault: {file_name}")
     try:
-        file = open(file_name, "r", encoding="utf-8")
+        file = open(file_name, "r")
         print("Connection established...")
         print()
         print("RECOVERED DATA:")
@@ -16,7 +16,7 @@ def ft_ancient_text_recovery() -> None:
         print()
         print("Data recovery complete. Storage unit disconnected.")
         file.close()
-    except FileNotFoundError:
+    except Exception:
         print("ERROR: Storage vault not found. Run data generator first.")
 
 

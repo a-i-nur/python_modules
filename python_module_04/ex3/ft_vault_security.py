@@ -9,17 +9,11 @@ def ft_vault_security() -> None:
     print("=== CYBER ARCHIVES - VAULT SECURITY SYSTEM ===")
     print("Initiating secure vault access...")
     print("Vault connection established with failsafe protocols")
-    try:
-        with open(source_file, "r") as file:
-            data = file.read().splitlines()
-    except FileNotFoundError:
-        data = [
-            "Quantum encryption keys recovered",
-            "Archive integrity: 100%",
-        ]
-    print("SECURE EXTRACTION:")
-    for line in data:
-        print(f"[CLASSIFIED] {line}")
+    with open(source_file, "r") as file:
+        data = file.read().splitlines()
+        print("SECURE EXTRACTION:")
+        for line in data:
+            print(f"[CLASSIFIED] {line}")
     with open(destination_file, "w") as file:
         file.write("New security protocols archived\n")
     print("SECURE PRESERVATION:")

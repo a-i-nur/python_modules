@@ -2,15 +2,18 @@
 
 
 def ft_ancient_text_recovery() -> None:
+    file_name = "ancient_fragment.txt"
     print("=== CYBER ARCHIVES - DATA RECOVERY SYSTEM ===")
-    print("Accessing Storage Vault: ancient_fragment.txt")
+    print()
+    print(f"Accessing Storage Vault: {file_name}")
     try:
-        file = open("ancient_fragment.txt", "r")
+        file = open(file_name, "r", encoding="utf-8")
         print("Connection established...")
+        print()
         print("RECOVERED DATA:")
-        data = file.read().splitlines()
-        for line in data:
-            print(line)
+        file_data = file.read()
+        print(file_data)
+        print()
         print("Data recovery complete. Storage unit disconnected.")
         file.close()
     except FileNotFoundError:

@@ -9,8 +9,8 @@ def handle_archive_access(file_name: str) -> None:
         print(f"CRISIS ALERT: Attempting access to '{file_name}'...")
 
     try:
-        if file_name == "classified_vault.txt":
-            raise PermissionError
+        # if file_name == "classified_vault.txt":
+        #     raise PermissionError
         with open(file_name, "r") as file:
             content = file.read().strip()
         print(f'SUCCESS: Archive recovered - "{content}"')

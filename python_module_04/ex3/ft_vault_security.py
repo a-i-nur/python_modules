@@ -10,11 +10,13 @@ def ft_vault_security() -> None:
     print("Vault connection established with failsafe protocols")
     print()
 
+    print("SECURE EXTRACTION:")
     with open(file_name, "r") as file:
-        data = file.read().splitlines()
-        print("SECURE EXTRACTION:")
-        for line in data:
-            print(f"{line}")
+        data = file.read()
+        print(data)
+        # data = file.read().splitlines()
+        # for line in data:
+        #     print(line)
     print()
 
     print("SECURE PRESERVATION:")

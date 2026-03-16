@@ -14,10 +14,13 @@ def ft_ancient_text_recovery() -> None:
         file_data = file.read()
         print(file_data)
         print()
+    except FileNotFoundError:
+        print("ERROR: Storage vault not found. Run data generator first.")
+    except Exception as e:
+        print(f"ERROR: {e}")
+    finally:
         print("Data recovery complete. Storage unit disconnected.")
         file.close()
-    except Exception:
-        print("ERROR: Storage vault not found. Run data generator first.")
 
 
 if __name__ == "__main__":

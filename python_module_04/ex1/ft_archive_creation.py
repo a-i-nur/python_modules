@@ -11,20 +11,27 @@ def ft_archive_creation() -> None:
 
     print("=== CYBER ARCHIVES - PRESERVATION SYSTEM ===")
     print()
-    print(f"Initializing new storage unit: {file_name}")
-    file = open(file_name, "w")
-    print("Storage unit created successfully...")
-    print()
-    print("Inscribing preservation data...")
-    for entry in entries:
-        line = f"[ENTRY {index:03d}] {entry}"
-        file.write(line + "\n")
-        print(line)
-        index += 1
-    print()
-    print("Data inscription complete. Storage unit sealed.")
-    print(f"Archive {file_name} ready for long-term preservation.")
-    file.close()
+
+    try:
+        print(f"Initializing new storage unit: {file_name}")
+        file = open(file_name, "w")
+    except Exception as e:
+        print(f"ERROR: {e}")
+        return
+    else:
+        print("Storage unit created successfully...")
+        print()
+        print("Inscribing preservation data...")
+        for entry in entries:
+            line = f"[ENTRY {index:03d}] {entry}"
+            file.write(line + "\n")
+            print(line)
+            index += 1
+        print()
+    finally:
+        print("Data inscription complete. Storage unit sealed.")
+        print(f"Archive '{file_name}' ready for long-term preservation.")
+        file.close()
 
 
 if __name__ == "__main__":

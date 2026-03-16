@@ -25,7 +25,9 @@ def ft_stream_management() -> None:
     print("[STANDARD] Data transmission complete", file=sys.stdout)
     print()
 
-    sys.stdout.write("Three-channel communication test successful.\n")
+    print("Three-channel communication test successful.")
+    # alternatively, we could write to stdout directly:
+    # sys.stdout.write("Three-channel communication test successful.\n")
 
 
 if __name__ == "__main__":

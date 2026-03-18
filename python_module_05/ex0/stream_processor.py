@@ -32,7 +32,7 @@ class NumericProcessor(DataProcessor):
         self.context: ProcessorContext = {"last_validation": None}
 
     def validate(self, data: Any) -> bool:
-        """Разрешаем число или непустой список чисел int/float."""
+        """Accept a single number or a non-empty list of numeric values."""
         if isinstance(data, (int, float)):
             self.context["last_validation"] = "Numeric data verified"
             return True
@@ -47,7 +47,7 @@ class NumericProcessor(DataProcessor):
         return False
 
     def process(self, data: Any) -> str:
-        """Считаем количество, сумму и среднее значение."""
+        """Return the count, sum, and average for the validated input."""
         if not self.validate(data):
             raise ValueError("NumericProcessor received invalid data")
         elif self.printing_validation:
@@ -68,14 +68,14 @@ class NumericProcessor(DataProcessor):
 
 
 class TextProcessor(DataProcessor):
-    """Специализированный процессор текстовых данных."""
+    """Process plain text input and report basic text statistics."""
 
     def __init__(self) -> None:
         super().__init__()
         self.context: ProcessorContext = {"last_validation": None}
 
     def validate(self, data: Any) -> bool:
-        """Для текста подходит только строка."""
+        """Accept only string input."""
         is_valid = isinstance(data, str)
         if is_valid:
             self.context["last_validation"] = "Text data verified"
@@ -84,7 +84,7 @@ class TextProcessor(DataProcessor):
         return is_valid
 
     def process(self, data: Any) -> str:
-        """Считаем символы и слова в строке."""
+        """Return the character and word counts for the given text."""
         if not self.validate(data):
             raise ValueError("TextProcessor received invalid data")
         elif self.printing_validation:
@@ -97,7 +97,7 @@ class TextProcessor(DataProcessor):
 
 
 class LogProcessor(DataProcessor):
-    """Специализированный процессор лог-сообщений."""
+    """Process log entries formatted as a level followed by a message."""
 
     LOG_LEVELS = {"ERROR", "WARNING", "INFO", "DEBUG", "CRITICAL"}
 
@@ -106,7 +106,7 @@ class LogProcessor(DataProcessor):
         self.context: ProcessorContext = {"last_validation": None}
 
     def validate(self, data: Any) -> bool:
-        """Лог должен быть строкой с форматом LEVEL: message."""
+        """Accept log entries in the ``LEVEL: message`` format."""
         if not isinstance(data, str) or ":" not in data:
             self.context["last_validation"] = None
             return False
@@ -119,7 +119,7 @@ class LogProcessor(DataProcessor):
         return is_valid
 
     def process(self, data: Any) -> str:
-        """Извлекаем уровень лога и текст сообщения."""
+        """Extract the log level and message and format them for output."""
         if not self.validate(data):
             raise ValueError("LogProcessor received invalid log entry")
         elif self.printing_validation:
@@ -140,11 +140,10 @@ class LogProcessor(DataProcessor):
 
 
 def safe_run(processor: DataProcessor, data: Any) -> str:
-    """Единая точка запуска процессора с безопасной обработкой ошибок.
+    """Run any processor through a shared interface and handle failures safely.
 
-    Этот helper нужен, чтобы в stream_processor() полиморфно вызывать разные
-    процессоры через общий интерфейс DataProcessor и не дублировать
-    try/except-блоки.
+    This helper keeps ``stream_processor()`` focused on orchestration by
+    centralizing exception handling for all ``DataProcessor`` implementations.
     """
     try:
         return processor.process(data)

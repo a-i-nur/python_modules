@@ -59,13 +59,12 @@ class NumericProcessor(DataProcessor):
             numbers = [normalized]
         else:
             numbers = normalized
-        count = len(numbers)
-        total = sum(numbers)
-        average = total / count
+        len_nums = len(numbers)
+        sum_nums = sum(numbers)
+        average = sum_nums / len_nums
         return (
-            f"Processed {count} numeric values, "
-            f"sum={total}, avg={average}"
-        )
+            f"Processed {len_nums} numeric values, "
+            f"sum={sum_nums}, avg={average}")
 
 
 class TextProcessor(DataProcessor):
@@ -78,9 +77,10 @@ class TextProcessor(DataProcessor):
     def validate(self, data: Any) -> bool:
         """Для текста подходит только строка."""
         is_valid = isinstance(data, str)
-        self.context["last_validation"] = (
-            "Text data verified" if is_valid else None
-        )
+        if is_valid:
+            self.context["last_validation"] = "Text data verified"
+        else:
+            self.context["last_validation"] = None
         return is_valid
 
     def process(self, data: Any) -> str:
@@ -91,15 +91,15 @@ class TextProcessor(DataProcessor):
             print(f"Validation: {self.context['last_validation']}")
 
         text = data
-        chars = len(text)
-        words = len(text.split())
-        return f"Processed text: {chars} characters, {words} words"
+        len_text = len(text)
+        count_words = len(text.split())
+        return f"Processed text: {len_text} characters, {count_words} words"
 
 
 class LogProcessor(DataProcessor):
     """Специализированный процессор лог-сообщений."""
 
-    LEVELS = {"ERROR", "WARNING", "INFO", "DEBUG"}
+    LOG_LEVELS = {"ERROR", "WARNING", "INFO", "DEBUG", "CRITICAL"}
 
     def __init__(self) -> None:
         super().__init__()
@@ -111,10 +111,11 @@ class LogProcessor(DataProcessor):
             self.context["last_validation"] = None
             return False
         level = data.split(":", 1)[0].strip().upper()
-        is_valid = level in self.LEVELS
-        self.context["last_validation"] = (
-            "Log entry verified" if is_valid else None
-        )
+        is_valid = level in self.LOG_LEVELS
+        if is_valid:
+            self.context["last_validation"] = "Log entry verified"
+        else:
+            self.context["last_validation"] = None
         return is_valid
 
     def process(self, data: Any) -> str:
@@ -127,8 +128,15 @@ class LogProcessor(DataProcessor):
         raw_level, raw_message = data.split(":", 1)
         level = raw_level.strip().upper()
         message = raw_message.strip()
-        label = "ALERT" if level == "ERROR" else "INFO"
-        return f"[{label}] {level} level detected: {message}"
+        if level == "ERROR" or level == "CRITICAL":
+            label = "[ALERT]"
+        elif level == "WARNING":
+            label = "[WARNING]"
+        elif level == "DEBUG":
+            label = "[DEBUG]"
+        else:
+            label = "[INFO]"
+        return f"{label} {level} level detected: {message}"
 
 
 def safe_run(processor: DataProcessor, data: Any) -> str:
@@ -152,18 +160,18 @@ def stream_processor() -> None:
     text = TextProcessor()
     log = LogProcessor()
 
-    demos: List[tuple[str, DataProcessor, Any]] = [
+    test_cases: List[tuple[str, DataProcessor, Any]] = [
         ("Numeric Processor", numeric, [1, 2, 3, 4, 5]),
         ("Text Processor", text, "Hello Nexus World"),
         ("Log Processor", log, "ERROR: Connection timeout")]
 
-    for title, processor, sample in demos:
+    for title, processor, input_data in test_cases:
         print(f"Initializing {title}...")
-        if isinstance(sample, str):
-            print(f'Processing data: "{sample}"')
+        if isinstance(input_data, str):
+            print(f'Processing data: "{input_data}"')
         else:
-            print(f"Processing data: {sample}")
-        result = safe_run(processor, sample)
+            print(f"Processing data: {input_data}")
+        result = safe_run(processor, input_data)
         print(processor.format_output(result))
         print()
 
@@ -172,19 +180,19 @@ def stream_processor() -> None:
     print("Processing multiple data types through same interface...")
 
     processors: List[DataProcessor] = [numeric, text, log]
-    mixed_samples: List[Any] = [
+    mixed_input: List[Any] = [
         [1, 2, 3],
         "Hello World!",
-        "INFO: System ready",]
+        "INFO: System ready"]
 
-    index = 1
-    while index < len(processors) + 1:
-        processor = processors[index - 1]
+    i = 0
+    while i < len(processors):
+        processor = processors[i]
         processor.printing_validation = False
-        sample = mixed_samples[index - 1]
-        result = safe_run(processor, sample)
-        print(f"Result {index}: {result}")
-        index += 1
+        input_data = mixed_input[i]
+        result = safe_run(processor, input_data)
+        print(f"Result {i + 1}: {result}")
+        i += 1
     print()
     print("Foundation systems online. Nexus ready for advanced streams.")
 

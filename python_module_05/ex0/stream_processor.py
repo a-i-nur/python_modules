@@ -1,33 +1,49 @@
 #!/usr/bin/env python3
+"""Provide simple processors for numeric, text, and log stream data.
+
+Types:
+    NumericInput: A single number or a non-empty list of numbers.
+    ProcessorContext: Shared validation state stored by each processor.
+"""
 
 
 from abc import ABC, abstractmethod
 from typing import Any, List, Dict, Union, Optional
 
 NumericInput = Union[int, float, List[Union[int, float]]]
+"""A single numeric value or a list of numeric values."""
+
 ProcessorContext = Dict[str, Optional[str]]
+"""A context dictionary that stores simple processor state."""
 
 
 class DataProcessor(ABC):
+    """Define the common interface for all data processors."""
 
     def __init__(self) -> None:
+        """Initialize shared processor settings."""
         self.printing_validation: bool = True
 
     @abstractmethod
     def process(self, data: Any) -> str:
+        """Process validated input data and return a result string."""
         pass
 
     @abstractmethod
     def validate(self, data: Any) -> bool:
+        """Check whether the provided input matches processor rules."""
         pass
 
     def format_output(self, result: str) -> str:
+        """Wrap the processing result in a standard output format."""
         return f"Output: {result}"
 
 
 class NumericProcessor(DataProcessor):
+    """Process numeric input and report simple aggregate statistics."""
 
     def __init__(self) -> None:
+        """Initialize numeric processor state."""
         super().__init__()
         self.context: ProcessorContext = {"last_validation": None}
 
@@ -71,6 +87,7 @@ class TextProcessor(DataProcessor):
     """Process plain text input and report basic text statistics."""
 
     def __init__(self) -> None:
+        """Initialize text processor state."""
         super().__init__()
         self.context: ProcessorContext = {"last_validation": None}
 
@@ -102,6 +119,7 @@ class LogProcessor(DataProcessor):
     LOG_LEVELS = {"ERROR", "WARNING", "INFO", "DEBUG", "CRITICAL"}
 
     def __init__(self) -> None:
+        """Initialize log processor state."""
         super().__init__()
         self.context: ProcessorContext = {"last_validation": None}
 
@@ -152,6 +170,7 @@ def safe_run(processor: DataProcessor, data: Any) -> str:
 
 
 def stream_processor() -> None:
+    """Run a small demo that shows all processors through one interface."""
     print("=== CODE NEXUS - DATA PROCESSOR FOUNDATION ===")
     print()
 

@@ -110,6 +110,8 @@ class TransactionStream(DataStream):
 
     def __init__(self, stream_id: str) -> None:
         super().__init__(stream_id)
+        # общий чистый денежный поток
+        # (положительный для покупок, отрицательный для продаж)
         self.net_flow_total: float = 0.0
 
     def process_batch(self, data_batch: List[Any]) -> str:
@@ -120,16 +122,23 @@ class TransactionStream(DataStream):
         print(f"Processing transaction batch: {data_batch}")
         self.processed_count += len(transactions)
 
+        # вычисляем чистый денежный поток для текущего батча
         net_flow = 0.0
+        # покупка (buy) увеличивает поток, продажа (sell) уменьшает
         for item in transactions:
+            # извлекаем сумму и направление операции
             amount = float(item["amount"])
+            # покупка увеличивает денежный поток, продажа уменьшает
             if item["action"] == "buy":
                 net_flow += amount
             else:
                 net_flow -= amount
 
+        # обновляем общий чистый денежный поток для всего потока данных
         self.net_flow_total += net_flow
-        sign = "+" if net_flow > 0 else ""
+        # добавляем знак "+" для положительного потока,
+        # иначе оставляем без знака
+        sign = "+" if net_flow > 0 else "-"
 
         return (
             f"Transaction analysis: {len(transactions)} operations, "
@@ -143,6 +152,7 @@ class TransactionStream(DataStream):
         if criteria != "high_priority":
             return data_batch
         transactions = self._parse_batch(data_batch)
+        # фильтруем только операции с суммой 150.0 или выше
         return [
             f"{item['action']}:{item['amount']}"
             for item in transactions
@@ -178,6 +188,7 @@ class EventStream(DataStream):
         self.error_count: int = 0
 
     def process_batch(self, data_batch: List[Any]) -> str:
+        # извлекаем только текстовые события для анализа
         events = [item for item in data_batch if isinstance(item, str)]
         if not events:
             raise ValueError("event batch has no textual events")
@@ -185,8 +196,11 @@ class EventStream(DataStream):
         print(f"Processing event batch: {events}")
         self.processed_count += len(events)
 
+        # подсчитываем количество событий, содержащих слово "error"
+        # (без учета регистра)
         errors = sum(1 for item in events if "error" in item.lower())
         self.error_count += errors
+        # корректно формируем слово "error" в зависимости от количества ошибок
         label = "error" if errors == 1 else "errors"
 
         return (
@@ -200,11 +214,12 @@ class EventStream(DataStream):
     ) -> List[Any]:
         if criteria != "high_priority":
             return data_batch
+        # фильтруем только события, содержащие слово "error"
+        # (без учета регистра)
         return [
             item
             for item in data_batch
-            if isinstance(item, str) and "error" in item.lower()
-        ]
+            if isinstance(item, str) and "error" in item.lower()]
 
     def get_stats(self) -> StreamStats:
         stats = super().get_stats()

@@ -1,10 +1,4 @@
 #!/usr/bin/env python3
-"""Provide simple processors for numeric, text, and log stream data.
-
-Types:
-    NumericInput: A single number or a non-empty list of numbers.
-    ProcessorContext: Shared validation state stored by each processor.
-"""
 
 
 from abc import ABC, abstractmethod

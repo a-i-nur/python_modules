@@ -327,7 +327,7 @@ def simulate_recovery(pipeline: ProcessingPipeline) -> None:
     print("Simulating pipeline failure...")
 
     error_result = pipeline.process("BROKEN_STREAM_PAYLOAD")
-    if isinstance(error_result, str) and error_result.startswith("Error"):
+    if isinstance(error_result, str):
         print(error_result)
         print("Recovery initiated: Switching to backup processor")
         print("Recovery successful: Pipeline restored, processing resumed")

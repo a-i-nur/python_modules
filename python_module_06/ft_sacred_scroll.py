@@ -2,7 +2,7 @@ import alchemy
 import alchemy.elements
 
 
-def main() -> None:
+def ft_sacred_scroll() -> None:
     print()
     print("=== Sacred Scroll Mastery ===")
     print()
@@ -54,4 +54,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    ft_sacred_scroll()

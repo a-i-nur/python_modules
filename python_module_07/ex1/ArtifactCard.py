@@ -1,18 +1,11 @@
-"""ex1/ArtifactCard.py
-
-Конкретная карта артефакта для постоянных эффектов.
-Требования сабжа (Exercise 1):
-- durability и effect;
-- play + activate_ability;
-- артефакт живет, пока не исчерпает прочность.
-"""
+"""Artifact card implementation for persistent effects."""
 
 from typing import Any
 from ex0.Card import Card
 
 
 class ArtifactCard(Card):
-    """Карта-артефакт с долговременным эффектом."""
+    """Artifact card with a persistent effect."""
 
     def __init__(
         self,
@@ -24,16 +17,15 @@ class ArtifactCard(Card):
     ) -> None:
         super().__init__(name, cost, rarity)
         if not isinstance(durability, int) or durability <= 0:
-            raise ValueError(
-                "durability должен быть положительным целым числом"
-            )
+            raise ValueError("durability must be a positive integer")
         if not isinstance(effect, str) or not effect.strip():
-            raise ValueError("effect должен быть непустой строкой")
+            raise ValueError("effect must be a non-empty string")
 
         self.durability: int = durability
         self.effect: str = effect.strip()
 
     def play(self, game_state: dict[str, Any]) -> dict[str, Any]:
+        """Return the artifact play result."""
         return {
             "card_played": self.name,
             "mana_used": self.cost,
@@ -42,7 +34,7 @@ class ArtifactCard(Card):
         }
 
     def activate_ability(self) -> dict[str, Any]:
-        # Каждая активация тратит 1 durability.
+        """Activate the artifact and spend one durability point."""
         if self.durability <= 0:
             return {
                 "artifact": self.name,

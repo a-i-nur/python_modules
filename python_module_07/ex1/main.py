@@ -1,8 +1,4 @@
-"""ex1/main.py
-
-Демонстрация Deck Builder Layer.
-Запуск: python3 -m ex1.main
-"""
+"""Entry point for the ex1 deck builder demo."""
 
 from ex0.CreatureCard import CreatureCard
 from .ArtifactCard import ArtifactCard
@@ -61,7 +57,7 @@ def main() -> None:
 
     print("Polymorphism in action: Same interface, different card behaviors!")
 
-    # print("\nTEST WITH GENERATOR\n")
+    # print("\n=== TEST WITH GENERATOR ===\n")
     # from tools.card_generator import CardGenerator
     #
     # generator = CardGenerator()

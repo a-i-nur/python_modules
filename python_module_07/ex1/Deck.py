@@ -1,9 +1,4 @@
-"""ex1/Deck.py
-
-Менеджер колоды.
-Требования сабжа (Exercise 1):
-- add/remove/shuffle/draw/get_deck_stats.
-"""
+"""Deck container and basic deck operations."""
 
 import random
 from typing import Any
@@ -15,17 +10,19 @@ from .SpellCard import SpellCard
 
 
 class Deck:
-    """Хранит набор карт и предоставляет полиморфные операции поверх Card."""
+    """Store cards and expose deck-level operations."""
 
     def __init__(self) -> None:
         self.cards: list[Card] = []
 
     def add_card(self, card: Card) -> None:
+        """Add a card to the deck."""
         if not isinstance(card, Card):
-            raise TypeError("В колоду можно добавлять только экземпляры Card")
+            raise TypeError("only Card instances can be added to the deck")
         self.cards.append(card)
 
     def remove_card(self, card_name: str) -> bool:
+        """Remove the first card with the given name."""
         for index, card in enumerate(self.cards):
             if card.name == card_name:
                 del self.cards[index]
@@ -33,14 +30,17 @@ class Deck:
         return False
 
     def shuffle(self) -> None:
+        """Shuffle the deck in place."""
         random.shuffle(self.cards)
 
     def draw_card(self) -> Card:
+        """Draw and remove the top card from the deck."""
         if not self.cards:
-            raise IndexError("Колода пуста")
+            raise IndexError("deck is empty")
         return self.cards.pop(0)
 
     def get_deck_stats(self) -> dict[str, Any]:
+        """Return basic statistics about the deck."""
         total_cards = len(self.cards)
         if total_cards == 0:
             return {

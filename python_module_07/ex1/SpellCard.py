@@ -1,11 +1,4 @@
-"""ex1/SpellCard.py
-
-Конкретная карта заклинания для Deck Builder.
-Требования сабжа (Exercise 1):
-- унаследовать Card;
-- иметь effect_type;
-- реализовать play и resolve_effect.
-"""
+"""Spell card implementation for the deck builder layer."""
 
 from enum import Enum
 from typing import Any
@@ -23,10 +16,7 @@ class EffectType(Enum):
 
 
 class SpellCard(Card):
-    """Карта-однократный эффект.
-
-    После розыгрыша считается израсходованной.
-    """
+    """One-shot spell card."""
 
     def __init__(
         self,
@@ -37,14 +27,14 @@ class SpellCard(Card):
     ) -> None:
         super().__init__(name, cost, rarity)
         if not isinstance(effect_type, str) or not effect_type.strip():
-            raise ValueError("effect_type должен быть непустой строкой")
+            raise ValueError("effect_type must be a non-empty string")
         normalized_effect_type = effect_type.strip().lower()
         if normalized_effect_type not in [item.value for item in EffectType]:
-            raise ValueError("effect_type имеет недопустимое значение")
+            raise ValueError("effect_type has an invalid value")
         self.effect_type: str = normalized_effect_type
 
     def play(self, game_state: dict[str, Any]) -> dict[str, Any]:
-        # Эффект делаем простым (по сабжу не требуется сложная боевая логика).
+        """Return a simple play result for the spell."""
         effect_map = {
             "damage": "Deal 3 damage to target",
             "heal": "Restore 3 health to ally",
@@ -63,8 +53,7 @@ class SpellCard(Card):
         }
 
     def resolve_effect(self, targets: list[Any]) -> dict[str, Any]:
-        # Отдельный метод из сабжа:
-        # здесь можно показать, на кого применили эффект.
+        """Resolve the spell effect against the given targets."""
         target_names: list[str] = []
         for target in targets:
             try:

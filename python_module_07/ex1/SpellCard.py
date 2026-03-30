@@ -25,6 +25,7 @@ class SpellCard(Card):
         rarity: str,
         effect_type: str,
     ) -> None:
+        """Initialize the spell effect type."""
         super().__init__(name, cost, rarity)
         if not isinstance(effect_type, str) or not effect_type.strip():
             raise ValueError("effect_type must be a non-empty string")
@@ -49,7 +50,6 @@ class SpellCard(Card):
             "card_played": self.name,
             "mana_used": self.cost,
             "effect": effect_text,
-            # "consumed": True,
         }
 
     def resolve_effect(self, targets: list[Any]) -> dict[str, Any]:

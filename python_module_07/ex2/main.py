@@ -4,6 +4,7 @@ from .EliteCard import EliteCard
 
 
 def main() -> None:
+    """Run the ex2 ability system demo."""
     print()
     print("=== DataDeck Ability System ===")
     print()

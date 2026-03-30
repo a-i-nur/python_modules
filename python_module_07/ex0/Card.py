@@ -1,11 +1,8 @@
-"""ex0/Card.py
-
-Base contract for all DataDeck cards.
-"""
+"""Base card contract for the DataDeck project."""
 
 from abc import ABC, abstractmethod
-from typing import Any
 from enum import Enum
+from typing import Any
 
 
 class Rarity(Enum):
@@ -22,7 +19,7 @@ class Card(ABC):
     """Abstract base class for all cards."""
 
     def __init__(self, name: str, cost: int, rarity: str) -> None:
-        # Validate core card fields early.
+        """Initialize the shared card fields."""
         if not isinstance(name, str) or not name.strip():
             raise ValueError("name must be a non-empty string")
         if not isinstance(cost, int) or cost < 0:

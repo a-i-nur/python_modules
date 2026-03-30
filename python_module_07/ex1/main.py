@@ -7,6 +7,7 @@ from .SpellCard import SpellCard
 
 
 def main() -> None:
+    """Run the ex1 deck builder demo."""
     print()
     print("=== DataDeck Deck Builder ===")
     print()

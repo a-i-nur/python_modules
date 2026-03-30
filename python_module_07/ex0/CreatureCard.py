@@ -1,7 +1,4 @@
-"""ex0/CreatureCard.py
-
-First concrete `Card` implementation for Exercise 0.
-"""
+"""Concrete creature card implementation for ex0."""
 
 from typing import Any
 from .Card import Card
@@ -18,6 +15,7 @@ class CreatureCard(Card):
         attack: int,
         health: int,
     ) -> None:
+        """Initialize the creature-specific combat stats."""
         super().__init__(name, cost, rarity)
 
         if not isinstance(attack, int) or attack <= 0:

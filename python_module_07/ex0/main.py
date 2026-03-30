@@ -1,14 +1,10 @@
-"""ex0/main.py
-
-Exercise 0 demo entry point.
-Run with: python3 -m ex0.main
-"""
+"""Entry point for the ex0 card foundation demo."""
 
 from .CreatureCard import CreatureCard
 
 
 def main() -> None:
-    """Run the Exercise 0 demo."""
+    """Run the ex0 card foundation demo."""
     print()
     print("=== DataDeck Card Foundation ===")
     print()
@@ -35,7 +31,6 @@ def main() -> None:
 
     print("Fire Dragon attacks Goblin Warrior:")
     print(f"Attack result: {dragon.attack_target('Goblin Warrior')}")
-    # A string target is enough for the Exercise 0 demo.
     print()
 
     mana = 3
@@ -45,9 +40,9 @@ def main() -> None:
 
     print("Abstract pattern successfully demonstrated!")
 
-    # Generator-based local test snippet.
     # print("\n=== TEST WITH GENERATOR ===\n")
     # from tools.card_generator import CardGenerator
+    #
     # generator = CardGenerator()
     # data = generator.get_creature("Fire Dragon")
     # if data is not None:

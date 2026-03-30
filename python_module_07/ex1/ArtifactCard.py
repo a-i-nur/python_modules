@@ -15,6 +15,7 @@ class ArtifactCard(Card):
         durability: int,
         effect: str,
     ) -> None:
+        """Initialize artifact durability and effect text."""
         super().__init__(name, cost, rarity)
         if not isinstance(durability, int) or durability <= 0:
             raise ValueError("durability must be a positive integer")
@@ -30,7 +31,6 @@ class ArtifactCard(Card):
             "card_played": self.name,
             "mana_used": self.cost,
             "effect": f"Permanent: {self.effect}",
-            # "artifact_in_play": True,
         }
 
     def activate_ability(self) -> dict[str, Any]:

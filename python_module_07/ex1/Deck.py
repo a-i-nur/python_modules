@@ -13,6 +13,7 @@ class Deck:
     """Store cards and expose deck-level operations."""
 
     def __init__(self) -> None:
+        """Initialize an empty deck."""
         self.cards: list[Card] = []
 
     def add_card(self, card: Card) -> None:

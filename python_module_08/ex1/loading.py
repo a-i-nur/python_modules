@@ -23,7 +23,6 @@ def analyze_matrix_data() -> None:
         print("Mainframe API status: unavailable")
         print(f"Error: {e}")
         print(f"Using fallback seed: {seed}")
-    print()
 
     numpy.random.seed(seed)
 
@@ -38,22 +37,51 @@ def analyze_matrix_data() -> None:
         }
     )
 
+    matrix_data["status"] = numpy.where(
+        matrix_data["signal_strength"] > 85,
+        "the_one",
+        numpy.where(
+            matrix_data["signal_strength"] > 65,
+            "agent",
+            "human",
+        ),
+    )
+
     average_signal = matrix_data["signal_strength"].mean()
     maximum_signal = matrix_data["signal_strength"].max()
     minimum_signal = matrix_data["signal_strength"].min()
+    agent_count = (matrix_data["status"] == "agent").sum()
+    human_count = (matrix_data["status"] == "human").sum()
+    the_one_count = (matrix_data["status"] == "the_one").sum()
 
     print(f"Average signal strength: {average_signal:.2f}")
     print(f"Maximum signal strength: {maximum_signal:.2f}")
     print(f"Minimum signal strength: {minimum_signal:.2f}")
+    print(f"Humans detected: {human_count}")
+    print(f"Agents detected: {agent_count}")
+    print(f"The One candidates detected: {the_one_count}")
+
+    # the_one_candidates = matrix_data[
+    #     matrix_data["status"] == "the_one"
+    # ]
+
+    # if not the_one_candidates.empty:
+    #     print("THE ONE DETECTED")
+    #     print(the_one_candidates)
+    # else:
+    #     print("No sign of The One in this simulation.")
 
     print("Generating visualization...")
     print()
 
     pyplot.figure(figsize=(10, 6))
     pyplot.hist(matrix_data["signal_strength"], bins=30)
+    pyplot.axvline(65, linestyle="--", label="Agent threshold")
+    pyplot.axvline(90, linestyle="--", label="The One threshold")
     pyplot.title("Matrix Signal Strength Distribution")
     pyplot.xlabel("Signal Strength")
     pyplot.ylabel("Frequency")
+    pyplot.legend()
     pyplot.savefig("matrix_analysis.png")
     pyplot.close()
 

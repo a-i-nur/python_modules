@@ -16,9 +16,9 @@ class AlienContact(BaseModel):
     timestamp: datetime
     location: str = Field(min_length=3, max_length=100)
     contact_type: ContactType
-    signal_strength: float = Field(gt=0.0, lt=10.0)
-    duration_minutes: int = Field(gt=0, lt=1441)
-    witness_count: int = Field(gt=0, lt=101)
+    signal_strength: float = Field(ge=0.0, le=10.0)
+    duration_minutes: int = Field(ge=1, le=1440)
+    witness_count: int = Field(ge=1, le=100)
     message_received: str | None = Field(max_length=500, default=None)
     is_verified: bool = False
 
@@ -65,7 +65,7 @@ def main() -> None:
     )
 
     print("Alien Contact Log Validation")
-    print("="*40)
+    print("=" * 40)
     print("Valid contact report:")
     print(f"ID: {contact.contact_id}")
     print(f"Type: {contact.contact_type.value}")
@@ -76,7 +76,7 @@ def main() -> None:
     print(f"Message: {contact.message_received!r}")
     print()
 
-    print("="*40)
+    print("=" * 40)
     print("Expected validation error:")
     try:
         AlienContact(

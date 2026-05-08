@@ -89,7 +89,12 @@ def main() -> None:
             witness_count=1,
         )
     except ValidationError as error:
-        print(error.errors()[0]["ctx"]["error"])
+        first_error = error.errors()[0]
+
+        if "ctx" in first_error and "error" in first_error["ctx"]:
+            print(first_error["ctx"]["error"])
+        else:
+            print(first_error["msg"])
 
 
 if __name__ == "__main__":

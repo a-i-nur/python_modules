@@ -1,24 +1,130 @@
 # DataDeck
 
-DataDeck is a Python project about abstract programming patterns.
+## 1. What This Module Is About
 
-The project uses a small creature card game to practice:
+This module is about abstract programming patterns in Python.
+
+The project uses a small creature card game. The goal is not to build a real game. The
+goal is to learn how to design code that is easy to extend.
+
+This module teaches:
 
 - abstract classes
-- abstract factories
+- abstract factory pattern
+- polymorphism
 - multiple inheritance
-- capabilities
+- capability classes
 - strategy pattern
 - type annotations
+- clean package structure
 
-The code uses only Python standard tools.
+The project uses only Python standard tools. External libraries are forbidden by the
+subject.
 
-## Requirements
+## 2. Theory You Need To Know
 
-- Python 3.10 or later
-- `flake8`
-- `mypy`
-- no external libraries in the project code
+### Abstract Class
+
+An abstract class is a contract.
+
+It says what methods child classes must have, but it does not always implement the real
+behavior.
+
+In this project:
+
+```python
+class Creature(ABC):
+    @abstractmethod
+    def attack(self) -> str:
+        pass
+```
+
+This means every creature must implement `attack()`.
+
+### Polymorphism
+
+Polymorphism means different classes can use the same method name with different
+behavior.
+
+Example:
+
+- `Flameling.attack()` returns a fire attack
+- `Aquabub.attack()` returns a water attack
+
+The main code can call:
+
+```python
+creature.attack()
+```
+
+without knowing the exact creature class.
+
+### Abstract Factory
+
+An abstract factory creates a family of related objects.
+
+In this project, every creature factory creates:
+
+- a base creature
+- an evolved creature
+
+Example:
+
+- `FlameFactory` creates `Flameling` and `Pyrodon`
+- `AquaFactory` creates `Aquabub` and `Torragon`
+
+### Capability
+
+A capability is an optional ability.
+
+Not every creature can heal. Not every creature can transform.
+
+So these abilities are not inside the base `Creature` class. They are separate abstract
+classes:
+
+- `HealCapability`
+- `TransformCapability`
+
+### Strategy Pattern
+
+A strategy is an object that contains behavior.
+
+In this project, strategies decide how a creature acts in battle:
+
+- normal strategy: attack
+- defensive strategy: attack and heal
+- aggressive strategy: transform, attack, revert
+
+The tournament code does not need to know all details. It only calls:
+
+```python
+strategy.act(creature)
+```
+
+## 3. Lore And Connection With Theory
+
+The lore is a creature card game.
+
+Creatures belong to families. A family has a base creature and an evolved creature.
+
+This connects to abstract factory:
+
+- one factory represents one family
+- the factory creates the base and evolved cards
+
+Creatures can also have special abilities.
+
+This connects to capabilities:
+
+- healing creatures can heal
+- transform creatures can change form
+
+During a tournament, different creatures need different battle behavior.
+
+This connects to strategy:
+
+- the strategy decides what action happens in battle
+- the creature does not need to know tournament logic
 
 ## Project Structure
 
@@ -44,9 +150,404 @@ ex2/
     strategies.py
 ```
 
-## How To Check The Project
+## Exercise 0: Creature Factory
 
-Run all programs:
+### 1. What To Do, What It Teaches, What Theory Is Needed
+
+In exercise 0, you must create basic creature cards and factories.
+
+You need:
+
+- abstract class `Creature`
+- concrete creatures
+- abstract class `CreatureFactory`
+- concrete factories
+- root script `battle.py`
+
+This exercise teaches the abstract factory pattern.
+
+Theory needed:
+
+- abstract classes
+- inheritance
+- polymorphism
+- factory pattern
+
+### 2. How It Is Done In My Code
+
+Files:
+
+```text
+ex0/creature.py
+ex0/creature_factory.py
+ex0/__init__.py
+battle.py
+```
+
+`Creature` is the abstract base class. It stores:
+
+- `name`
+- `creature_type`
+
+It has:
+
+- abstract method `attack()`
+- concrete method `describe()`
+
+Concrete creatures:
+
+- `Flameling`
+- `Pyrodon`
+- `Aquabub`
+- `Torragon`
+
+Factories:
+
+- `FlameFactory`
+- `AquaFactory`
+
+`ex0/__init__.py` exposes only factories, not concrete creatures.
+
+### 3. How To Run And Demonstrate
+
+Run:
+
+```bash
+python3 battle.py
+```
+
+Show:
+
+- factories are created
+- base and evolved creatures are created
+- creatures describe themselves
+- creatures attack
+- base creatures fight
+
+Important for subject:
+
+- `battle.py` must be at the repository root
+- `ex0/` must have `__init__.py`
+- the package should not expose concrete creatures directly
+- no virtual environment is required by the subject
+- do not depend on external libraries
+
+### 4. Subject Questions
+
+Question: What is the abstract factory in ex0?
+
+Answer: `CreatureFactory` is the abstract factory. It defines `create_base()` and
+`create_evolved()`.
+
+Question: What are the concrete factories?
+
+Answer: `FlameFactory` and `AquaFactory`.
+
+Question: Why use factories?
+
+Answer: The main script can create creature families without depending on concrete
+creature classes.
+
+Pydantic question:
+
+`Think About: How does Pydantic's automatic type conversion work?`
+
+Answer: This question is not part of this subject. This project forbids external
+libraries, and Pydantic is an external library. It should not be used here.
+
+`What happens when you pass a string timestamp to a datetime field?`
+
+Answer: This is also a Pydantic question and does not apply to this module.
+
+### 5. Tricky Evaluation Questions
+
+Question: Why is `Creature` abstract?
+
+Answer: Because every creature must attack, but every creature attacks differently.
+
+Question: Why not create `Flameling()` directly in `battle.py`?
+
+Answer: Because `battle.py` should depend on the factory interface, not on concrete
+creature classes.
+
+Question: What happens if we add an electric family?
+
+Answer: We can add new concrete creatures and a new factory, for example
+`ElectricFactory`, without changing the abstract factory interface.
+
+Question: What is polymorphism here?
+
+Answer: All creatures have `attack()`, but every creature returns a different attack
+message.
+
+## Exercise 1: Capabilities
+
+### 1. What To Do, What It Teaches, What Theory Is Needed
+
+In exercise 1, you must add optional creature abilities.
+
+You need:
+
+- `HealCapability`
+- `TransformCapability`
+- healing creature family
+- transform creature family
+- factories for these families
+- root script `capacitor.py`
+
+This exercise teaches multiple inheritance and capability interfaces.
+
+Theory needed:
+
+- abstract classes
+- multiple inheritance
+- optional behavior
+- state inside an object
+
+### 2. How It Is Done In My Code
+
+Files:
+
+```text
+ex1/capabilities.py
+ex1/healing_creatures.py
+ex1/transform_creatures.py
+ex1/creature_factory.py
+ex1/__init__.py
+capacitor.py
+```
+
+`capabilities.py` contains:
+
+- `HealCapability`
+- `TransformCapability`
+
+Healing creatures:
+
+- `Sproutling`
+- `Bloomelle`
+
+Transform creatures:
+
+- `Shiftling`
+- `Morphagon`
+
+Factories:
+
+- `HealingCreatureFactory`
+- `TransformCreatureFactory`
+
+`TransformCapability` stores state:
+
+```python
+self.transformed = False
+```
+
+This state changes the attack result.
+
+### 3. How To Run And Demonstrate
+
+Run:
+
+```bash
+python3 capacitor.py
+```
+
+Show:
+
+- healing creatures can describe, attack, and heal
+- transform creatures can describe, attack, transform, attack again, and revert
+- after transform, the attack changes
+- after revert, the creature returns to normal state
+
+Important for subject:
+
+- `capacitor.py` must be at the repository root
+- `ex1/` must have `__init__.py`
+- ex1 must build on ex0
+- capability classes should not inherit from `Creature`
+- no external libraries are needed
+
+### 4. Subject Questions
+
+Question: Why are capabilities separate from `Creature`?
+
+Answer: Because not all creatures have all abilities. Keeping capabilities separate
+makes the base class smaller and the design easier to extend.
+
+Question: Why does transform need state?
+
+Answer: The creature must remember if it is transformed. The attack changes depending on
+that state.
+
+Question: Why use multiple inheritance?
+
+Answer: A healing creature is both a `Creature` and a `HealCapability`. A transform
+creature is both a `Creature` and a `TransformCapability`.
+
+Pydantic question:
+
+`Think About: How does Pydantic's automatic type conversion work?`
+
+Answer: This question does not apply to this subject. Pydantic is not allowed here
+because external libraries are forbidden.
+
+`What happens when you pass a string timestamp to a datetime field?`
+
+Answer: In Pydantic, it can convert valid timestamp strings to `datetime`, but this is
+not relevant to this project and should not be used in the code.
+
+### 5. Tricky Evaluation Questions
+
+Question: Why not put `heal()` inside `Creature`?
+
+Answer: Because then every creature would have a method that many creatures cannot use.
+That makes the base class too large.
+
+Question: Why call both parent initializers in transform creatures?
+
+Answer: Because the creature part needs name and type, and the transform capability
+needs its own `transformed` state.
+
+Question: Can a creature have both heal and transform?
+
+Answer: Yes, the design allows it. A future class could inherit from `Creature`,
+`HealCapability`, and `TransformCapability`, if needed.
+
+Question: What does `isinstance(creature, HealCapability)` check?
+
+Answer: It checks if the object has the healing capability.
+
+## Exercise 2: Abstract Strategy
+
+### 1. What To Do, What It Teaches, What Theory Is Needed
+
+In exercise 2, you must add battle strategies and a tournament.
+
+You need:
+
+- abstract `BattleStrategy`
+- `NormalStrategy`
+- `DefensiveStrategy`
+- `AggressiveStrategy`
+- invalid strategy handling
+- root script `tournament.py`
+
+This exercise teaches the strategy pattern.
+
+Theory needed:
+
+- abstract classes
+- polymorphism
+- strategy pattern
+- exception handling
+- using capabilities with `isinstance()`
+
+### 2. How It Is Done In My Code
+
+Files:
+
+```text
+ex2/strategies.py
+ex2/__init__.py
+tournament.py
+```
+
+`BattleStrategy` defines:
+
+- `act()`
+- `is_valid()`
+
+Strategies:
+
+- `NormalStrategy`: attacks with any creature
+- `DefensiveStrategy`: works with healing creatures
+- `AggressiveStrategy`: works with transform creatures
+
+Invalid combinations raise:
+
+```python
+InvalidStrategyError
+```
+
+`tournament.py` catches this error and aborts the tournament safely.
+
+### 3. How To Run And Demonstrate
+
+Run:
+
+```bash
+python3 tournament.py
+```
+
+Show:
+
+- tournament 0 works normally
+- tournament 1 shows invalid strategy handling
+- tournament 2 shows several opponents fighting each other
+
+Important for subject:
+
+- `tournament.py` must be at the repository root
+- `ex2/` must have `__init__.py`
+- the tournament receives pairs: factory plus strategy
+- each opponent fights every other opponent once
+- invalid pairs must be handled without a raw crash
+
+### 4. Subject Questions
+
+Question: What is a strategy?
+
+Answer: A strategy is an object that contains battle behavior.
+
+Question: Why use strategies?
+
+Answer: The creature classes stay simple. Battle behavior is moved into separate
+strategy classes.
+
+Question: What makes a strategy valid?
+
+Answer: `is_valid()` checks if the creature has the needed capability.
+
+Pydantic question:
+
+`Think About: How does Pydantic's automatic type conversion work?`
+
+Answer: This is not part of this module. Pydantic is an external library and is
+forbidden by the subject.
+
+`What happens when you pass a string timestamp to a datetime field?`
+
+Answer: In Pydantic, valid strings can be parsed into `datetime`, but this project does
+not use Pydantic or `datetime` parsing.
+
+### 5. Tricky Evaluation Questions
+
+Question: Why does `NormalStrategy` work with every creature?
+
+Answer: Because every creature has `attack()`.
+
+Question: Why does `AggressiveStrategy` need `TransformCapability`?
+
+Answer: Because it calls `transform()` and `revert()`. Normal creatures do not have
+these methods.
+
+Question: Why does `DefensiveStrategy` need `HealCapability`?
+
+Answer: Because it calls `heal()`.
+
+Question: Why use a custom exception?
+
+Answer: It makes invalid strategy errors clear and easy to catch in `tournament.py`.
+
+Question: Why not put all battle logic in `tournament.py`?
+
+Answer: That would create many `if` statements. Strategies keep the tournament simple
+and make it easier to add new battle behavior later.
+
+## How To Check The Whole Module
+
+Run all scripts:
 
 ```bash
 python3 battle.py
@@ -66,381 +567,37 @@ Check types:
 mypy battle.py capacitor.py tournament.py ex0 ex1 ex2
 ```
 
-If `mypy` is installed only in the virtual environment:
+If `mypy` is installed only in the local virtual environment:
 
 ```bash
 ./venv/bin/mypy battle.py capacitor.py tournament.py ex0 ex1 ex2
 ```
 
-## Exercise 0: Creature Factory
-
-Exercise 0 introduces the abstract factory pattern.
-
-Main idea:
-
-One factory creates a family of related creatures.
-
-Example:
-
-- `FlameFactory` creates `Flameling` and `Pyrodon`
-- `AquaFactory` creates `Aquabub` and `Torragon`
-
-Important classes:
-
-- `Creature`: abstract base class
-- `CreatureFactory`: abstract factory class
-- `FlameFactory`: concrete factory
-- `AquaFactory`: concrete factory
-
-The `Creature` class defines common behavior:
-
-- every creature has a name
-- every creature has a type
-- every creature can describe itself
-- every creature must implement `attack()`
-
-Run exercise 0:
-
-```bash
-python3 battle.py
-```
-
-What happens:
-
-- the program creates flame and aqua factories
-- each factory creates a base creature and an evolved creature
-- the program prints descriptions and attacks
-- base creatures fight
-
-What to explain in evaluation:
-
-An abstract factory creates related objects without exposing the concrete classes to the
-main program. `battle.py` works with factories, not directly with concrete creature
-classes.
-
-### Theory For Exercise 0
-
-Exercise 0 uses two important ideas: abstraction and factory creation.
-
-Abstraction means the code depends on a general interface, not on one exact class.
-
-In this exercise, `Creature` is abstract. It says: every creature must have `attack()`.
-But it does not know how each creature attacks.
-
-Example:
-
-- `Flameling` attacks with Ember
-- `Aquabub` attacks with Water Gun
-
-This is polymorphism. The same method name, `attack()`, has different behavior in
-different classes.
-
-`CreatureFactory` is also abstract. It says every factory must create:
-
-- one base creature
-- one evolved creature
-
-Concrete factories decide the real classes:
-
-- `FlameFactory` creates flame creatures
-- `AquaFactory` creates water creatures
-
-Why this is useful:
-
-- `battle.py` does not need to know all concrete creature classes
-- adding a new family is easier
-- the code has fewer hardcoded decisions
-
-Simple defense sentence:
-
-Exercise 0 shows that I can create objects through an abstract factory instead of
-creating concrete classes directly in the main script.
-
-## Exercise 1: Capabilities
-
-Exercise 1 adds extra abilities to creatures.
-
-Main idea:
-
-Capabilities are separate from the `Creature` base class.
-
-There are two capability abstract classes:
-
-- `HealCapability`
-- `TransformCapability`
-
-Healing creatures:
-
-- `Sproutling`
-- `Bloomelle`
-
-Transforming creatures:
-
-- `Shiftling`
-- `Morphagon`
-
-Factories:
-
-- `HealingCreatureFactory`
-- `TransformCreatureFactory`
-
-Run exercise 1:
-
-```bash
-python3 capacitor.py
-```
-
-What happens:
-
-- healing creatures describe themselves, attack, and heal
-- transform creatures describe themselves, attack, transform, attack again, and revert
-
-What to explain in evaluation:
-
-Capabilities are not part of every creature. Only some creatures can heal. Only some
-creatures can transform. This keeps the design flexible because new capabilities can be
-added without changing the base `Creature` class.
-
-### Theory For Exercise 1
-
-Exercise 1 uses multiple inheritance and interface-like abstract classes.
-
-`HealCapability` and `TransformCapability` are not creatures. They are separate
-abilities.
-
-This is important because not all creatures have the same abilities.
-
-Example:
-
-- `Sproutling` is a `Creature` and has `HealCapability`
-- `Shiftling` is a `Creature` and has `TransformCapability`
-
-So a class can inherit from:
-
-- the base creature class
-- one capability class
-
-This design keeps `Creature` simple. `Creature` only knows about normal creature data
-and behavior. It does not contain `heal()`, `transform()`, or `revert()` because not all
-creatures need those methods.
-
-The transform capability also has state:
-
-```python
-self.transformed = False
-```
-
-This state changes the attack result:
-
-- before transform: normal attack
-- after transform: boosted attack
-- after revert: normal attack again
-
-Why this is useful:
-
-- new capabilities can be added later
-- the base `Creature` class stays clean
-- the code can check abilities with `isinstance()`
-- each class has a clear responsibility
-
-Simple defense sentence:
-
-Exercise 1 shows that I can add optional behavior with separate capability classes
-instead of putting every possible method inside the base `Creature` class.
-
-## Exercise 2: Abstract Strategy
-
-Exercise 2 adds battle strategies.
-
-Main idea:
-
-A strategy decides how a creature acts in battle.
-
-Strategies:
-
-- `NormalStrategy`: any creature can use it; it only attacks
-- `DefensiveStrategy`: only healing creatures can use it; it attacks and then heals
-- `AggressiveStrategy`: only transform creatures can use it; it transforms, attacks, and reverts
-
-There is also a custom exception:
-
-- `InvalidStrategyError`
-
-This exception is raised when a creature is used with the wrong strategy.
-
-Run exercise 2:
-
-```bash
-python3 tournament.py
-```
-
-What happens:
-
-- the program creates several creature factories
-- the program creates several strategies
-- each opponent is a pair: factory plus strategy
-- every opponent fights every other opponent once
-- invalid strategy combinations are handled safely
-
-What to explain in evaluation:
-
-The strategy pattern moves battle behavior out of the creature classes. The creature
-does not need to know tournament rules. The strategy object decides what to do.
-
-### Theory For Exercise 2
-
-Exercise 2 uses the strategy pattern.
-
-A strategy is a class that contains one behavior. In this project, each strategy decides
-how a creature acts during battle.
-
-The abstract class `BattleStrategy` defines two methods:
-
-- `is_valid()`: checks if this creature can use this strategy
-- `act()`: performs the strategy action
-
-Concrete strategies:
-
-- `NormalStrategy` works with every creature
-- `DefensiveStrategy` works only with healing creatures
-- `AggressiveStrategy` works only with transform creatures
-
-This means the tournament code does not need to know all details about healing and
-transforming. It only calls:
-
-```python
-strategy.act(creature)
-```
-
-The strategy object decides what to do.
-
-Invalid combinations are possible. For example, `Flameling` cannot use
-`AggressiveStrategy` because it cannot transform.
-
-For this case, the code raises:
-
-```python
-InvalidStrategyError
-```
-
-The tournament catches this error and stops safely.
-
-Why this is useful:
-
-- battle behavior is separated from creature classes
-- new strategies can be added later
-- the tournament logic stays simple
-- invalid combinations are handled clearly
-
-Simple defense sentence:
-
-Exercise 2 shows that I can move battle behavior into strategy classes, so the
-tournament can work with different behaviors through one common interface.
-
-## Design Pattern Summary
-
-### Abstract Class
-
-An abstract class is a contract.
-
-Example:
-
-`Creature` says every creature must have `attack()`.
-
-Concrete classes decide the real attack.
-
-### Abstract Factory
-
-An abstract factory creates a family of related objects.
-
-Example:
-
-`FlameFactory` creates the flame family:
-
-- base: `Flameling`
-- evolved: `Pyrodon`
-
-The main program does not need to create these classes directly.
-
-### Capability
-
-A capability is an extra ability.
-
-Example:
-
-- healing creatures have `heal()`
-- transform creatures have `transform()` and `revert()`
-
-This avoids putting all possible methods inside `Creature`.
-
-### Strategy
-
-A strategy is an object that represents behavior.
-
-Example:
-
-- normal behavior: attack
-- defensive behavior: attack and heal
-- aggressive behavior: transform, attack, revert
-
-This avoids many `if` statements in the tournament code.
-
 ## Submission Checklist
 
-Before submitting, check:
+Before submission, check:
 
-```bash
-python3 battle.py
-python3 capacitor.py
-python3 tournament.py
-python3 -m flake8 battle.py capacitor.py tournament.py ex0 ex1 ex2
-mypy battle.py capacitor.py tournament.py ex0 ex1 ex2
-```
+- all root scripts exist
+- all exercise folders have `__init__.py`
+- scripts run with `python3`
+- `flake8` passes
+- `mypy` passes
+- no external libraries are required by the code
+- only repository files are submitted
 
-Also check file names:
+Important file names:
 
-- `battle.py` is at the repository root
-- `capacitor.py` is at the repository root
-- `tournament.py` is at the repository root
-- `ex0/__init__.py` exists
-- `ex1/__init__.py` exists
-- `ex2/__init__.py` exists
+- `battle.py`
+- `capacitor.py`
+- `tournament.py`
+- `ex0/`
+- `ex1/`
+- `ex2/`
 
-Only files inside the Git repository will be evaluated.
+During evaluation, focus on understanding:
 
-## Simple Defense Answers
-
-Question: What is the goal of this project?
-
-Answer: The goal is to practice abstract programming patterns in Python using a card
-game example.
-
-Question: What is an abstract factory?
-
-Answer: It is a class that creates a family of related objects. In this project, each
-factory creates a base creature and an evolved creature from the same family.
-
-Question: Why not create creatures directly in `battle.py`?
-
-Answer: Because the main program should not depend on concrete creature classes. It is
-better to depend on the abstract factory interface.
-
-Question: Why are capabilities separate from `Creature`?
-
-Answer: Because not every creature can heal or transform. Separate capabilities keep the
-base class small and make the code easier to extend.
-
-Question: What is the strategy pattern?
-
-Answer: The strategy pattern puts behavior in separate strategy classes. In this
-project, each battle strategy decides how a creature acts during a fight.
-
-Question: How do you handle invalid strategies?
-
-Answer: Each strategy checks if the creature is valid. If not, it raises
-`InvalidStrategyError`, and `tournament.py` catches it and aborts the tournament safely.
-
-Question: Why use type annotations?
-
-Answer: Type annotations make the code clearer and allow `mypy` to find mistakes before
-running the program.
+- why abstract classes are used
+- why factories create families
+- why capabilities are separate
+- why strategies are separate from creatures
+- how invalid strategy combinations are handled

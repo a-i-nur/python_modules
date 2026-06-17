@@ -1,6 +1,16 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field, ValidationError
+try:
+    from pydantic import BaseModel, Field, ValidationError
+except ModuleNotFoundError as error:
+    raise SystemExit(
+        "Pydantic 2.x is required.\n\n"
+        "Create and activate a virtual environment:\n"
+        "  python3 -m venv .venv\n"
+        "  source .venv/bin/activate\n\n"
+        "Install dependencies:\n"
+        '  python -m pip install "pydantic>=2,<3"\n'
+    ) from error
 
 
 class SpaceStation(BaseModel):

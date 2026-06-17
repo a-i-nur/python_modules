@@ -16,7 +16,7 @@ def spell_reducer(spells: list[int], operation: str) -> int:
     }
 
     if operation not in operations:
-        return 0
+        raise ValueError(f"Unknown operation: {operation}")
 
     return reduce(operations[operation], spells)
 
@@ -63,24 +63,32 @@ def base_enchantment(power: int, element: str, target: str) -> str:
 def main() -> None:
     spell_powers = [10, 20, 30, 40]
 
+    print()
     print("Testing spell reducer...")
     print(f"Sum: {spell_reducer(spell_powers, 'add')}")
     print(f"Product: {spell_reducer(spell_powers, 'multiply')}")
     print(f"Max: {spell_reducer(spell_powers, 'max')}")
+    # try:
+    #     print(f"Sum: {spell_reducer(spell_powers, 'kiss')}")
+    # except ValueError as e:
+    #     print(e)
 
-    print("\nTesting partial enchanter...")
+    print()
+    print("Testing partial enchanter...")
     enchantments = partial_enchanter(base_enchantment)
     print(enchantments["fire"]("Sword"))
     print(enchantments["ice"]("Shield"))
     print(enchantments["lightning"]("Staff"))
 
-    print("\nTesting memoized fibonacci...")
+    print()
+    print("Testing memoized fibonacci...")
     print(f"Fib(0): {memoized_fibonacci(0)}")
     print(f"Fib(1): {memoized_fibonacci(1)}")
     print(f"Fib(10): {memoized_fibonacci(10)}")
     print(f"Fib(15): {memoized_fibonacci(15)}")
 
-    print("\nTesting spell dispatcher...")
+    print()
+    print("Testing spell dispatcher...")
     dispatcher = spell_dispatcher()
     print(dispatcher(42))
     print(dispatcher("fireball"))

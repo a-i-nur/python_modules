@@ -46,6 +46,7 @@ def memory_vault() -> dict[str, Callable]:
 
 
 def main() -> None:
+    print()
     print("Testing mage counter...")
     counter_a = mage_counter()
     counter_b = mage_counter()
@@ -53,18 +54,21 @@ def main() -> None:
     print(f"counter_a call 2: {counter_a()}")
     print(f"counter_b call 1: {counter_b()}")
 
-    print("\nTesting spell accumulator...")
+    print()
+    print("Testing spell accumulator...")
     accumulator = spell_accumulator(100)
     print(f"Base 100, add 20: {accumulator(20)}")
     print(f"Base 100, add 30: {accumulator(30)}")
 
-    print("\nTesting enchantment factory...")
+    print()
+    print("Testing enchantment factory...")
     flaming = enchantment_factory("Flaming")
     frozen = enchantment_factory("Frozen")
     print(flaming("Sword"))
     print(frozen("Shield"))
 
-    print("\nTesting memory vault...")
+    print()
+    print("Testing memory vault...")
     vault = memory_vault()
     vault["store"]("secret", 42)
     print("Store 'secret' = 42")

@@ -23,38 +23,46 @@ def mage_stats(mages: list[dict]) -> dict:
     }
 
 
-def main():
+def main() -> None:
     artifacts = [
         {"name": "Crystal Orb", "power": 85, "type": "focus"},
         {"name": "Fire Staff", "power": 92, "type": "weapon"},
-        {"name": "Ice Wand", "power": 67, "type": "weapon"},
+        {"name": "Elder Wand", "power": 66, "type": "weapon"},
     ]
 
     mages = [
-        {"name": "Alex", "power": 80, "element": "fire"},
-        {"name": "Jordan", "power": 55, "element": "ice"},
-        {"name": "Riley", "power": 95, "element": "lightning"},
+        {"name": "Harry", "power": 95, "element": "defense"},
+        {"name": "Hermione", "power": 80, "element": "charms"},
+        {"name": "Ron", "power": 65, "element": "strategy"},
     ]
 
     spells = ["fireball", "heal", "shield"]
 
+    print()
     print("Testing artifact sorter...")
     sorted_artifacts = artifact_sorter(artifacts)
     print(
         f"{sorted_artifacts[0]['name']} ({sorted_artifacts[0]['power']} power)"
         f" comes before "
-        f"{sorted_artifacts[-1]['name']} "
-        f"({sorted_artifacts[-1]['power']} power)"
+        f"{sorted_artifacts[1]['name']} "
+        f"({sorted_artifacts[1]['power']} power)"
     )
 
-    print("\nTesting power filter...")
-    print(power_filter(mages, 70))
+    print()
+    print("Testing power filter...")
+    for mage in power_filter(mages, 70):
+        print(f"{mage['name']} ({mage['power']} power, {mage['element']})")
 
-    print("\nTesting spell transformer...")
+    print()
+    print("Testing spell transformer...")
     print(" ".join(spell_transformer(spells)))
 
-    print("\nTesting mage stats...")
-    print(mage_stats(mages))
+    print()
+    print("Testing mage stats...")
+    stats = mage_stats(mages)
+    print(f"Max power: {stats['max_power']}")
+    print(f"Min power: {stats['min_power']}")
+    print(f"Average power: {stats['avg_power']}")
 
 
 if __name__ == "__main__":

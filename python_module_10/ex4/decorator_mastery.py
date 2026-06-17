@@ -85,11 +85,13 @@ def main() -> None:
     result = fireball()
     print(f"Result: {result}")
 
-    print("\nTesting retrying spell...")
+    print()
+    print("Testing retrying spell...")
     print(unstable_spell())
     print(successful_spell())
 
-    print("\nTesting MageGuild...")
+    print()
+    print("Testing MageGuild...")
     guild = MageGuild()
     print(MageGuild.validate_mage_name("Alex"))
     print(MageGuild.validate_mage_name("Jo"))

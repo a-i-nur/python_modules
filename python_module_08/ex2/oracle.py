@@ -1,7 +1,10 @@
 import os
 import sys
 
-from dotenv import load_dotenv
+try:
+    from dotenv import load_dotenv  # type: ignore[import-not-found]
+except ImportError:
+    load_dotenv = None
 
 
 REQUIRED_CONFIG = [
@@ -14,6 +17,12 @@ REQUIRED_CONFIG = [
 
 
 def load_configuration() -> None:
+    if load_dotenv is None:
+        print("Missing dependency: python-dotenv")
+        print("Install it with:")
+        print("pip install python-dotenv")
+        return
+
     load_dotenv()
 
 

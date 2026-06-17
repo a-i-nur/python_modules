@@ -77,7 +77,7 @@ def analyze_matrix_data() -> None:
     pyplot.figure(figsize=(10, 6))
     pyplot.hist(matrix_data["signal_strength"], bins=30)
     pyplot.axvline(65, linestyle="--", label="Agent threshold")
-    pyplot.axvline(90, linestyle="--", label="The One threshold")
+    pyplot.axvline(85, linestyle="--", label="The One threshold")
     pyplot.title("Matrix Signal Strength Distribution")
     pyplot.xlabel("Signal Strength")
     pyplot.ylabel("Frequency")
